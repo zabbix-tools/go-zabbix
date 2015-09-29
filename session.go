@@ -3,6 +3,7 @@ package zabbix
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 )
@@ -36,7 +37,7 @@ func NewSession(url string, username string, password string) (session *Session,
 	// get Zabbix API version
 	res, err := session.Do(NewRequest("apiinfo.version", nil))
 	if err != nil {
-		return nil, newError("Error getting Zabbix API version: %v", err)
+		return nil, fmt.Errorf("Error getting Zabbix API version: %v", err)
 	}
 
 	err = res.Bind(&session.apiVersion)
@@ -52,7 +53,7 @@ func NewSession(url string, username string, password string) (session *Session,
 
 	res, err = session.Do(NewRequest("user.login", params))
 	if err != nil {
-		return nil, newError("Error logging in to Zabbix API: %v", err)
+		return nil, fmt.Errorf("Error logging in to Zabbix API: %v", err)
 	}
 
 	err = res.Bind(&session.authToken)

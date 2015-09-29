@@ -1,4 +1,4 @@
-# go-zabbix
+# go-zabbix [![GoDoc](https://godoc.org/github.com/cavaliercoder/go-zabbix?status.svg)](https://godoc.org/github.com/cavaliercoder/go-zabbix)
 
 *Go bindings for the Zabbix API*
 
