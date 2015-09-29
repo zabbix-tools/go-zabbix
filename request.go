@@ -3,6 +3,10 @@ package zabbix
 import "sync/atomic"
 
 // A Request represents a JSON-RPC request to be sent by a client.
+//
+// This struct maps to the JSON request body described in the Zabbix API
+// documentation:
+// https://www.zabbix.com/documentation/2.2/manual/api#authentication.
 type Request struct {
 	// JSONRPCVersion is the version string of the Zabbix API. This should
 	// always be set to "2.0".
