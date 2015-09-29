@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-var session *Session = nil
+var session *Session
 
 func GetTestSession(t *testing.T) *Session {
 	var err error
