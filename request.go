@@ -1,6 +1,8 @@
 package zabbix
 
-import "sync/atomic"
+import (
+	"sync/atomic"
+)
 
 // A Request represents a JSON-RPC request to be sent by a client.
 //
@@ -18,8 +20,8 @@ type Request struct {
 	// Params is the request's body.
 	Params interface{} `json:"params"`
 
-	// RequestID is an abitrary identifier for the request which is returned in
-	// the corresponding API response to assist with multi-threaded
+	// RequestID is an abitrary identifier for the Request which is returned in
+	// the corresponding API Response to assist with multi-threaded
 	// applications. This value is automatically incremented for each new
 	// Request by NewRequest.
 	RequestID uint64 `json:"id"`

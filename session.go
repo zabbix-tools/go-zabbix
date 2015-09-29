@@ -69,6 +69,12 @@ func (c *Session) Version() string {
 	return c.apiVersion
 }
 
+// AuthToken returns the authentication token used by this session to
+// authentication all API calls.
+func (c *Session) AuthToken() string {
+	return c.authToken
+}
+
 // Do sends a JSON-RPC request and returns an API Response, using connection
 // configuration defined in the parent Session.
 //
@@ -123,6 +129,8 @@ func (c *Session) Do(req *Request) (resp *Response, err error) {
 	if err = resp.Err(); err != nil {
 		return
 	}
+
+	fmt.Printf("%s\n", resp.Body)
 
 	return
 }

@@ -27,8 +27,9 @@ type Response struct {
 	// the corresponding API Request.
 	RequestID int `json:"id"`
 
-	// Error is populated with the error information if the JSON-RPC request
+	// Error is populated with error information if the JSON-RPC request
 	// succeeded but there was an API error.
+	//
 	// This struct maps to the JSON response body described in the Zabbix API
 	// documentation:
 	// https://www.zabbix.com/documentation/2.2/manual/api#error_handling.
