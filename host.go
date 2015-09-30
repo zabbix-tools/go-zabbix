@@ -140,7 +140,7 @@ func (c *Session) GetHosts(params HostGetParams) ([]Host, error) {
 	for i, jhost := range hosts {
 		host, err := jhost.Host()
 		if err != nil {
-			return nil, fmt.Errorf("Error mapping Host %d in response: %v", err)
+			return nil, fmt.Errorf("Error mapping Host %d in response: %v", i, err)
 		}
 
 		out[i] = *host

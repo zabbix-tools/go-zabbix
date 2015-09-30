@@ -5,7 +5,7 @@ build:
 
 test:
 	go test -v
-	
+
 docker-run:
 	docker run \
 		-d \

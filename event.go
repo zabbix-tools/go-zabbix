@@ -102,8 +102,9 @@ type Event struct {
 	// Timestamp is the UTC timestamp at which the Event occurred.
 	Timestamp time.Time
 
-	// Source is the type of the Event source. Source must be one of the
-	// EventSource constants.
+	// Source is the type of the Event source.
+	//
+	// Source must be one of the EventSource constants.
 	Source int
 
 	// ObjectType is the type of the Object that is related to the Event.
@@ -113,8 +114,10 @@ type Event struct {
 	// ObjectID is the unique identifier of the Object that caused this Event.
 	ObjectID int
 
-	// Value is the state of the related Object. Value must be one of the
-	// EventValue constants, according to the Event's Source type.
+	// Value is the state of the related Object.
+	//
+	// Value must be one of the EventValue constants, according to the Event's
+	// Source type.
 	Value int
 
 	// ValueChanges indicates if the state of the related Object has changed
@@ -207,7 +210,7 @@ func (c *Session) GetEvents(params EventGetParams) ([]Event, error) {
 	for i, jevent := range events {
 		event, err := jevent.Event()
 		if err != nil {
-			return nil, fmt.Errorf("Error mapping Event %d in response: %v", err)
+			return nil, fmt.Errorf("Error mapping Event %d in response: %v", i, err)
 		}
 
 		out[i] = *event
