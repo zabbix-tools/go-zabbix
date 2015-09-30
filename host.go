@@ -2,7 +2,6 @@ package zabbix
 
 import (
 	"fmt"
-	"strconv"
 )
 
 const (
@@ -32,56 +31,6 @@ type Host struct {
 
 	// Macros contains all Host Macros assigned to the Host.
 	Macros []HostMacro
-}
-
-// jHost is a private map for the Zabbix API Host object.
-// See: https://www.zabbix.com/documentation/2.2/manual/api/reference/host/object
-type jHost struct {
-	HostID   string      `json:"hostid"`
-	Hostname string      `json:"host"`
-	Flags    string      `json:"flags"`
-	Name     string      `json:"name"`
-	Macros   []HostMacro `json:"macros,omitempty"`
-}
-
-// Host returns a native Go Host struct mapped from the given JSON Host data.
-func (c *jHost) Host() (*Host, error) {
-	var err error
-
-	host := &Host{}
-	host.HostID = c.HostID
-	host.Hostname = c.Hostname
-	host.DisplayName = c.Name
-	host.Macros = c.Macros
-	host.Source, err = strconv.Atoi(c.Flags)
-	if err != nil {
-		return nil, fmt.Errorf("Error parsing Host Flags: %v", err)
-	}
-
-	return host, nil
-}
-
-// jHosts is a slice of jHost structs.
-type jHosts []jHost
-
-// Hosts returns a native Go slice of Hosts mapped from the given JSON Hosts
-// data.
-func (c jHosts) Hosts() ([]Host, error) {
-	if c != nil {
-		hosts := make([]Host, len(c))
-		for i, jhost := range c {
-			host, err := jhost.Host()
-			if err != nil {
-				return nil, fmt.Errorf("Error unmarshalling Host %d in JSON data: %v", err)
-			}
-
-			hosts[i] = *host
-		}
-
-		return hosts, nil
-	}
-
-	return nil, nil
 }
 
 // HostGetParams represent the parameters for a `host.get` API call.
