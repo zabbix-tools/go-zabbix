@@ -27,11 +27,11 @@ func TestHosts(t *testing.T) {
 
 	hosts, err := session.GetHosts(params)
 	if err != nil {
-		t.Errorf("Error getting monitored hosts: %v", err)
+		t.Fatalf("Error getting Hosts: %v", err)
 	}
 
 	if len(*hosts) == 0 {
-		t.Fatal("No monitoring hosts found")
+		t.Fatal("No Hosts found")
 	}
 
 	for i, host := range *hosts {
@@ -40,5 +40,5 @@ func TestHosts(t *testing.T) {
 		}
 	}
 
-	t.Logf("Hosts: %v\n", hosts)
+	t.Logf("Validated %d Hosts", len(*hosts))
 }

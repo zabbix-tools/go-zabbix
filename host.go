@@ -89,7 +89,8 @@ type HostGetParams struct {
 	SelectTriggers        SelectQuery `json:"selectTriggers,omitempty"`
 }
 
-var ErrHostNotFound = errors.New("No Host was found matching the given search criteria")
+// ErrHostNotFound describes an empty result set for a Host search.
+var ErrHostNotFound = errors.New("No Hosts were found matching the given search criteria")
 
 func (c *Session) GetHosts(params HostGetParams) (*[]Host, error) {
 	req := NewRequest("host.get", params)
