@@ -130,7 +130,5 @@ func (c *Session) Do(req *Request) (resp *Response, err error) {
 		return
 	}
 
-	fmt.Printf("%s\n", resp.Body)
-
 	return
 }
