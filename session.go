@@ -3,10 +3,14 @@ package zabbix
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 )
+
+// ErrNotFound describes an empty result set for an API call.
+var ErrNotFound = errors.New("No results were found matching the given search parameters")
 
 // A Session is an authenticated Zabbix JSON-RPC API client. It must be
 // initialized and connected with NewSession.
@@ -83,7 +87,7 @@ func (c *Session) AuthToken() string {
 //
 // When err is nil, resp always contains a non-nil resp.Body.
 //
-// Generally Get, Post, or PostForm will be used instead of Do.
+// Generally Get or a wrapper function will be used instead of Do.
 func (c *Session) Do(req *Request) (resp *Response, err error) {
 	// configure request
 	req.AuthToken = c.authToken
@@ -113,8 +117,11 @@ func (c *Session) Do(req *Request) (resp *Response, err error) {
 
 	// read response body
 	b, err = ioutil.ReadAll(res.Body)
+	if err != nil {
+		return nil, fmt.Errorf("Error reading response: %v", err)
+	}
 
-	// map response
+	// map HTTP response to Response struct
 	resp = &Response{
 		StatusCode: res.StatusCode,
 	}
@@ -122,7 +129,7 @@ func (c *Session) Do(req *Request) (resp *Response, err error) {
 	// unmarshal response body
 	err = json.Unmarshal(b, &resp)
 	if err != nil {
-		return
+		return nil, fmt.Errorf("Error decoding JSON response body: %v", err)
 	}
 
 	// check for API errors
@@ -131,4 +138,23 @@ func (c *Session) Do(req *Request) (resp *Response, err error) {
 	}
 
 	return
+}
+
+// Get calls the given Zabbix API method with the given query parameters and
+// unmarshals the JSON response body into the given interface.
+//
+// An error is return if a transport, marshalling or API error happened.
+func (c *Session) Get(method string, params interface{}, v interface{}) error {
+	req := NewRequest(method, params)
+	resp, err := c.Do(req)
+	if err != nil {
+		return err
+	}
+
+	err = resp.Bind(v)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

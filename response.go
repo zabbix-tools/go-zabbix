@@ -33,16 +33,7 @@ type Response struct {
 	// This struct maps to the JSON response body described in the Zabbix API
 	// documentation:
 	// https://www.zabbix.com/documentation/2.2/manual/api#error_handling.
-	Error struct {
-		// Code is the Zabbix API error code.
-		Code int `json:"code"`
-
-		// Message is a short error summary.
-		Message string `json:"message"`
-
-		// Data is a detailed error message.
-		Data string `json:"data"`
-	} `json:"error"`
+	Error APIError `json:"error"`
 }
 
 // Err returns an error if the Response includes any error information returned

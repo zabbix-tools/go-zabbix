@@ -1,7 +1,6 @@
 package zabbix
 
 import (
-	"errors"
 	"fmt"
 	"strconv"
 	"time"
@@ -238,29 +237,20 @@ type EventGetParams struct {
 	SelectAcknowledgements SelectQuery `json:"select_acknowledges,omitempty"`
 }
 
-// ErrEventNotFound describes an empty result set for an Event search.
-var ErrEventNotFound = errors.New("No Events were found matching the given search criteria")
-
 // GetEvents queries the Zabbix API for Events matching the given search
 // parameters.
 //
 // ErrEventNotFound is returned if the search result set is empty.
 // An error is returned if a transport, parsing or API error occurs.
 func (c *Session) GetEvents(params EventGetParams) (*[]Event, error) {
-	req := NewRequest("event.get", params)
-	resp, err := c.Do(req)
-	if err != nil {
-		return nil, fmt.Errorf("Error getting events: %v", err)
-	}
-
 	events := make([]jEvent, 0)
-	err = resp.Bind(&events)
+	err := c.Get("event.get", params, &events)
 	if err != nil {
-		return nil, fmt.Errorf("Error decoding JSON data for events %v", err)
+		return nil, err
 	}
 
 	if len(events) == 0 {
-		return nil, ErrEventNotFound
+		return nil, ErrNotFound
 	}
 
 	// map JSON Events to Go Events

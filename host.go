@@ -1,10 +1,5 @@
 package zabbix
 
-import (
-	"errors"
-	"fmt"
-)
-
 type Host struct {
 	HostID      string `json:"hostid"`
 	Hostname    string `json:"host"`
@@ -62,14 +57,24 @@ type HostGetParams struct {
 	// IncludeTemplates extends search results to include Templates.
 	IncludeTemplates bool `json:"templated_hosts,omitempty"`
 
+	// SelectGroups causes the Host Groups that each Host belongs to to be
+	// attached in the search results.
 	SelectGroups SelectQuery `json:"selectGroups,omitempty"`
 
+	// SelectApplications causes the Applications from each Host to be attached
+	// in the search results.
 	SelectApplications SelectQuery `json:"selectApplications,omitempty"`
 
+	// SelectDiscoveries causes the Low-Level Discoveries from each Host to be
+	// attached in the search results.
 	SelectDiscoveries SelectQuery `json:"selectDiscoveries,omitempty"`
 
+	// SelectDiscoveryRule causes the Low-Level Discovery Rule that created each
+	// Host to be attached in the search results.
 	SelectDiscoveryRule SelectQuery `json:"selectDiscoveryRule,omitempty"`
 
+	// SelectGraphs causes the Graphs from each Host to be attached in the
+	// search results.
 	SelectGraphs SelectQuery `json:"selectGraphs,omitempty"`
 
 	SelectHostDiscovery SelectQuery `json:"selectHostDiscovery,omitempty"`
@@ -89,24 +94,15 @@ type HostGetParams struct {
 	SelectTriggers        SelectQuery `json:"selectTriggers,omitempty"`
 }
 
-// ErrHostNotFound describes an empty result set for a Host search.
-var ErrHostNotFound = errors.New("No Hosts were found matching the given search criteria")
-
 func (c *Session) GetHosts(params HostGetParams) (*[]Host, error) {
-	req := NewRequest("host.get", params)
-	resp, err := c.Do(req)
-	if err != nil {
-		return nil, fmt.Errorf("Error getting hosts: %v", err)
-	}
-
 	hosts := make([]Host, 0)
-	err = resp.Bind(&hosts)
+	err := c.Get("host.get", params, &hosts)
 	if err != nil {
-		return nil, fmt.Errorf("Error decoding JSON data for hosts %v", err)
+		return nil, err
 	}
 
 	if len(hosts) == 0 {
-		return nil, ErrHostNotFound
+		return nil, ErrNotFound
 	}
 
 	return &hosts, nil
