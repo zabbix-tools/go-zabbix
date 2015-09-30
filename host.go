@@ -1,11 +1,87 @@
 package zabbix
 
-type Host struct {
-	HostID      string `json:"hostid"`
-	Hostname    string `json:"host"`
-	DisplayName string `json:"name"`
+import (
+	"fmt"
+	"strconv"
+)
 
-	Macros []HostMacro `json:"macros,omitempty"`
+const (
+	// HostSourceDefault indicates that a Host was created in the normal way.
+	HostSourceDefault = 0
+
+	// HostSourceDiscovery indicates that a Host was created by Host discovery.
+	HostSourceDiscovery = 4
+)
+
+// Host represents a Zabbix Host returned from the Zabbix API.
+//
+// See: https://www.zabbix.com/documentation/2.2/manual/config/hosts
+type Host struct {
+	// HostID is the unique ID of the Host.
+	HostID string
+
+	// Hostname is the technical name of the Host.
+	Hostname string
+
+	// DisplayName is the visible name of the Host.
+	DisplayName string
+
+	// Source is the origin of the Host and must be one of the HostSource
+	// constants.
+	Source int
+
+	// Macros contains all Host Macros assigned to the Host.
+	Macros []HostMacro
+}
+
+// jHost is a private map for the Zabbix API Host object.
+// See: https://www.zabbix.com/documentation/2.2/manual/api/reference/host/object
+type jHost struct {
+	HostID   string      `json:"hostid"`
+	Hostname string      `json:"host"`
+	Flags    string      `json:"flags"`
+	Name     string      `json:"name"`
+	Macros   []HostMacro `json:"macros,omitempty"`
+}
+
+// Host returns a native Go Host struct mapped from the given JSON Host data.
+func (c *jHost) Host() (*Host, error) {
+	var err error
+
+	host := &Host{}
+	host.HostID = c.HostID
+	host.Hostname = c.Hostname
+	host.DisplayName = c.Name
+	host.Macros = c.Macros
+	host.Source, err = strconv.Atoi(c.Flags)
+	if err != nil {
+		return nil, fmt.Errorf("Error parsing Host Flags: %v", err)
+	}
+
+	return host, nil
+}
+
+// jHosts is a slice of jHost structs.
+type jHosts []jHost
+
+// Hosts returns a native Go slice of Hosts mapped from the given JSON Hosts
+// data.
+func (c jHosts) Hosts() ([]Host, error) {
+	if c != nil {
+		hosts := make([]Host, len(c))
+		for i, jhost := range c {
+			host, err := jhost.Host()
+			if err != nil {
+				return nil, fmt.Errorf("Error unmarshalling Host %d in JSON data: %v", err)
+			}
+
+			hosts[i] = *host
+		}
+
+		return hosts, nil
+	}
+
+	return nil, nil
 }
 
 // HostGetParams represent the parameters for a `host.get` API call.
@@ -94,8 +170,13 @@ type HostGetParams struct {
 	SelectTriggers        SelectQuery `json:"selectTriggers,omitempty"`
 }
 
-func (c *Session) GetHosts(params HostGetParams) (*[]Host, error) {
-	hosts := make([]Host, 0)
+// GetHosts queries the Zabbix API for Hosts matching the given search
+// parameters.
+//
+// ErrEventNotFound is returned if the search result set is empty.
+// An error is returned if a transport, parsing or API error occurs.
+func (c *Session) GetHosts(params HostGetParams) ([]Host, error) {
+	hosts := make([]jHost, 0)
 	err := c.Get("host.get", params, &hosts)
 	if err != nil {
 		return nil, err
@@ -105,5 +186,16 @@ func (c *Session) GetHosts(params HostGetParams) (*[]Host, error) {
 		return nil, ErrNotFound
 	}
 
-	return &hosts, nil
+	// map JSON Events to Go Events
+	out := make([]Host, len(hosts))
+	for i, jhost := range hosts {
+		host, err := jhost.Host()
+		if err != nil {
+			return nil, fmt.Errorf("Error mapping Host %d in response: %v", err)
+		}
+
+		out[i] = *host
+	}
+
+	return out, nil
 }

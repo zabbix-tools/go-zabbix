@@ -19,11 +19,11 @@ func TestEvents(t *testing.T) {
 		t.Fatalf("Error getting events: %v", err)
 	}
 
-	if len(*events) == 0 {
+	if len(events) == 0 {
 		t.Fatal("No events found")
 	}
 
-	for i, event := range *events {
+	for i, event := range events {
 		if event.EventID == "" {
 			t.Fatalf("Event %d has no Event ID", i)
 		}
@@ -33,5 +33,5 @@ func TestEvents(t *testing.T) {
 		}
 	}
 
-	t.Logf("Validated %d Events", len(*events))
+	t.Logf("Validated %d Events", len(events))
 }

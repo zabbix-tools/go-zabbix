@@ -101,6 +101,7 @@ type jEvent struct {
 	Source       string `json:"source"`
 	Value        string `json:"value"`
 	ValueChanged string `json:"value_changed"`
+	Hosts        jHosts `json:"hosts"`
 }
 
 // Event returns a native Go Event struct mapped from the given JSON Event data.
@@ -144,6 +145,12 @@ func (c *jEvent) Event() (*Event, error) {
 
 	event.ValueChanged = (c.ValueChanged == "1")
 
+	// map hosts
+	event.Hosts, err = c.Hosts.Hosts()
+	if err != nil {
+		return nil, err
+	}
+
 	return event, nil
 }
 
@@ -179,6 +186,14 @@ type Event struct {
 	// ValueChanges indicates if the state of the related Object has changed
 	// since the previous Event.
 	ValueChanged bool
+
+	// Hosts is an array of Host which contained the Object which created this
+	// Event.
+	//
+	// Hosts is only populated if EventGetParams.SelectHosts is given in the
+	// query parameters that returned this Event and the Event Source is one of
+	// EventSourceTrigger or EventSourceDiscoveryRule.
+	Hosts []Host
 }
 
 type EventGetParams struct {
@@ -242,7 +257,7 @@ type EventGetParams struct {
 //
 // ErrEventNotFound is returned if the search result set is empty.
 // An error is returned if a transport, parsing or API error occurs.
-func (c *Session) GetEvents(params EventGetParams) (*[]Event, error) {
+func (c *Session) GetEvents(params EventGetParams) ([]Event, error) {
 	events := make([]jEvent, 0)
 	err := c.Get("event.get", params, &events)
 	if err != nil {
@@ -264,5 +279,5 @@ func (c *Session) GetEvents(params EventGetParams) (*[]Event, error) {
 		out[i] = *event
 	}
 
-	return &out, nil
+	return out, nil
 }

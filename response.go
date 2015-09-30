@@ -50,7 +50,7 @@ func (c *Response) Err() error {
 func (c *Response) Bind(v interface{}) error {
 	err := json.Unmarshal(c.Body, v)
 	if err != nil {
-		return fmt.Errorf("Error deocding JSON response body: %v", err)
+		return fmt.Errorf("Error decoding JSON response body: %v", err)
 	}
 
 	return nil
