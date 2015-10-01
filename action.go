@@ -79,12 +79,14 @@ type ActionCondition struct{}
 
 type ActionOperation struct{}
 
-type ActionGetParams struct{}
+type ActionGetParams struct {
+	GetParameters
+}
 
 // GetActions queries the Zabbix API for Actions matching the given search
 // parameters.
 //
-// ErrActionNotFound is returned if the search result set is empty.
+// ErrNotFound is returned if the search result set is empty.
 // An error is returned if a transport, parsing or API error occurs.
 func (c *Session) GetActions(params ActionGetParams) ([]Action, error) {
 	actions := make([]jAction, 0)

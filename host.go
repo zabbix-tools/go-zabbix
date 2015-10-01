@@ -37,6 +37,8 @@ type Host struct {
 //
 // See: https://www.zabbix.com/documentation/2.2/manual/api/reference/host/get#parameters
 type HostGetParams struct {
+	GetParameters
+
 	// GroupIDs filters search results to hosts that are members of the given
 	// Group IDs.
 	GroupIDs []string `json:"groupids,omitempty"`

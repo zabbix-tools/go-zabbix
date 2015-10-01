@@ -2,7 +2,7 @@ package zabbix
 
 import (
 	"fmt"
-	"strconv"
+	//"strconv"
 )
 
 // jHost is a private map for the Zabbix API Host object.
@@ -10,25 +10,27 @@ import (
 type jHost struct {
 	HostID   string      `json:"hostid"`
 	Hostname string      `json:"host"`
-	Flags    string      `json:"flags"`
+	Flags    int         `json:"flags,string"`
 	Name     string      `json:"name"`
 	Macros   []HostMacro `json:"macros,omitempty"`
 }
 
 // Host returns a native Go Host struct mapped from the given JSON Host data.
 func (c *jHost) Host() (*Host, error) {
-	var err error
+	//var err error
 
 	host := &Host{}
 	host.HostID = c.HostID
 	host.Hostname = c.Hostname
 	host.DisplayName = c.Name
 	host.Macros = c.Macros
-	host.Source, err = strconv.Atoi(c.Flags)
-	if err != nil {
-		return nil, fmt.Errorf("Error parsing Host Flags: %v", err)
-	}
-
+	/*
+		host.Source, err = strconv.Atoi(c.Flags)
+		if err != nil {
+			return nil, fmt.Errorf("Error parsing Host Flags: %v", err)
+		}
+	*/
+	host.Source = c.Flags
 	return host, nil
 }
 

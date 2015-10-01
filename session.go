@@ -98,6 +98,8 @@ func (c *Session) Do(req *Request) (resp *Response, err error) {
 		return
 	}
 
+	dprintf("Call     [%s:%d]: %s\n", req.Method, req.RequestID, b)
+
 	// create HTTP request
 	r, err := http.NewRequest("POST", c.url, bytes.NewReader(b))
 	if err != nil {
@@ -120,6 +122,8 @@ func (c *Session) Do(req *Request) (resp *Response, err error) {
 	if err != nil {
 		return nil, fmt.Errorf("Error reading response: %v", err)
 	}
+
+	dprintf("Response [%s:%d]: %s\n", req.Method, req.RequestID, b)
 
 	// map HTTP response to Response struct
 	resp = &Response{

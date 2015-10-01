@@ -21,13 +21,20 @@ type jAction struct {
 	Status       string `json:"status"`
 }
 
-// Action returns a native Go Action struct mapped from the given JSON Action data.
+// Action returns a native Go Action struct mapped from the given JSON Action
+// data.
 func (c *jAction) Action() (*Action, error) {
 	var err error
 
 	action := &Action{}
 	action.ActionID = c.ActionID
 	action.Name = c.Name
+	action.ProblemMessageSubject = c.DefShortData
+	action.ProblemMessageBody = c.DefLongData
+	action.RecoveryMessageSubject = c.RShortData
+	action.RecoveryMessageBody = c.RShortData
+	action.RecoveryMessageEnabled = (c.RecoveryMsg == "1")
+	action.Enabled = (c.Status == "0")
 
 	action.StepDuration, err = strconv.Atoi(c.EscPeriod)
 	if err != nil {
@@ -45,8 +52,6 @@ func (c *jAction) Action() (*Action, error) {
 	if err != nil {
 		return nil, fmt.Errorf("Error parsing Action Event Type: %v", err)
 	}
-
-	// TODO: Finished mappings for Action fields
 
 	return action, nil
 }

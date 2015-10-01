@@ -134,6 +134,8 @@ type Event struct {
 }
 
 type EventGetParams struct {
+	GetParameters
+
 	// EventIDs filters search results to Events that matched the given Event
 	// IDs.
 	EventIDs []string `json:"eventids,omitempty"`

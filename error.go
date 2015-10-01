@@ -16,11 +16,7 @@ type APIError struct {
 	Data string `json:"data"`
 }
 
-func (e *APIError) String() string {
-	return fmt.Sprintf("%s (%d)", e.Message, e.Code)
-}
-
-// Error returns the string representation of an APIError
+// Error returns the string representation of an APIError.
 func (e *APIError) Error() string {
-	return e.String()
+	return fmt.Sprintf("%s (%d)", e.Message, e.Code)
 }

@@ -26,6 +26,10 @@ func TestActions(t *testing.T) {
 		if action.Name == "" {
 			t.Fatalf("Action %d has no name", i)
 		}
+
+		if action.EventType == EventSourceTrigger && action.ProblemMessageSubject == "" {
+			t.Fatalf("Action %d has no problem message subject", i)
+		}
 	}
 
 	t.Logf("Validated %d Actions", len(actions))
