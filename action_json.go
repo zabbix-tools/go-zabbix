@@ -41,7 +41,7 @@ func (c *jAction) Action() (*Action, error) {
 		return nil, fmt.Errorf("Error parsing Action Step Duration: %v", err)
 	}
 
-	if c.EvalType != "" {
+	if c.EvalType != "" { // removed in v2.4
 		action.EvaluationType, err = strconv.Atoi(c.EvalType)
 		if err != nil {
 			return nil, fmt.Errorf("Error parsing Action Evaluation Type: %v", err)

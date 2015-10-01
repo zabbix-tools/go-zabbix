@@ -94,10 +94,28 @@ type Alert struct {
 
 	// UserID is the unique ID of the User the Alert message was sent to.
 	UserID string
+
+	// Hosts is an array of Hosts that triggered this Alert.
+	//
+	// Hosts is only populated if AlertGetParams.SelectHosts is given in the
+	// query parameters that returned this Alert.
+	Hosts []Host
 }
 
 type AlertGetParams struct {
 	GetParameters
+
+	// SelectHosts causes all Hosts which triggered the Alert to be attached in
+	// the search results.
+	SelectHosts SelectQuery `json:"selectHosts,omitempty"`
+
+	// SelectMediaTypes causes the Media Types used for the Alert to be attached
+	// in the search results.
+	SelectMediaTypes SelectQuery `json:"selectMediatypes,omitempty"`
+
+	// SelectUsers causes all Users to which the Alert was addressed to be
+	// attached in the search results.
+	SelectUsers SelectQuery `json:"selectUsers,omitempty"`
 }
 
 // GetAlerts queries the Zabbix API for Alerts matching the given search

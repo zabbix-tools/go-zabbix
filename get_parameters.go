@@ -28,7 +28,8 @@ type GetParameters struct {
 	ExcludeSearch bool `json:"excludeSearch,omitempty"`
 
 	// Filter causes an API query to return only results that exactly match the
-	// given filter.
+	// given filter where map keys are the API fields to query and map values
+	// are an exact value (or array of values) that must match each key field.
 	//
 	// Not valid for text fields.
 	Filter map[string]interface{} `json:"filter,omitempty"`

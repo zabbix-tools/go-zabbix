@@ -7,7 +7,9 @@ import (
 func TestAlerts(t *testing.T) {
 	session := GetTestSession(t)
 
-	params := AlertGetParams{}
+	params := AlertGetParams{
+		SelectHosts: SelectExtendedOutput,
+	}
 
 	alerts, err := session.GetAlerts(params)
 	if err != nil {

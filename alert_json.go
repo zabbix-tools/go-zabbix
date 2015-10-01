@@ -21,10 +21,13 @@ type jAlert struct {
 	Status      int    `json:"status,string"`
 	Subject     string `json:"subject"`
 	UserID      string `json:"userid"`
+	Hosts       jHosts `json:"hosts"`
 }
 
 // Alert returns a native Go Alert struct mapped from the given JSON Alert data.
 func (c *jAlert) Alert() (*Alert, error) {
+	var err error
+
 	alert := &Alert{}
 	alert.AlertID = c.AlertID
 	alert.ActionID = c.ActionID
@@ -40,6 +43,12 @@ func (c *jAlert) Alert() (*Alert, error) {
 	alert.Status = c.Status
 	alert.Subject = c.Subject
 	alert.UserID = c.UserID
+
+	// map Hosts
+	alert.Hosts, err = c.Hosts.Hosts()
+	if err != nil {
+		return nil, err
+	}
 
 	return alert, nil
 }
