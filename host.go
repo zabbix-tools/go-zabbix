@@ -31,6 +31,9 @@ type Host struct {
 
 	// Macros contains all Host Macros assigned to the Host.
 	Macros []HostMacro
+
+	// Groups contains all Host Groups assigned to the Host.
+	Groups []Hostgroup
 }
 
 // HostGetParams represent the parameters for a `host.get` API call.

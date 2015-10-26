@@ -13,6 +13,7 @@ type jHost struct {
 	Flags    int         `json:"flags,string"`
 	Name     string      `json:"name"`
 	Macros   []HostMacro `json:"macros,omitempty"`
+	Groups   []Hostgroup `json:"groups,omitempty"`
 }
 
 // Host returns a native Go Host struct mapped from the given JSON Host data.
@@ -24,6 +25,7 @@ func (c *jHost) Host() (*Host, error) {
 	host.Hostname = c.Hostname
 	host.DisplayName = c.Name
 	host.Macros = c.Macros
+	host.Groups = c.Groups
 	/*
 		host.Source, err = strconv.Atoi(c.Flags)
 		if err != nil {
