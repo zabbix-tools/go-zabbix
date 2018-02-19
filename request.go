@@ -37,6 +37,9 @@ var requestID uint64
 // NewRequest returns a new Request given an API method name, and optional
 // request body parameters.
 func NewRequest(method string, params interface{}) *Request {
+	if params == nil {
+		params = map[string]string{}
+	}
 	return &Request{
 		JSONRPCVersion: "2.0",
 		Method:         method,
