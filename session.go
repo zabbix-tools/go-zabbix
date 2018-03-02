@@ -16,14 +16,14 @@ var ErrNotFound = errors.New("No results were found matching the given search pa
 // initialized and connected with NewSession.
 type Session struct {
 	// URL of the Zabbix JSON-RPC API (ending in `/api_jsonrpc.php`).
-	URL string
+	URL string `json:"url"`
 
 	// Token is the cached authentication token returned by `user.login` and
 	// used to authenticate all API calls in this Session.
-	Token string
+	Token string `json:"token"`
 
 	// ApiVersion is the software version string of the connected Zabbix API.
-	APIVersion string
+	APIVersion string `json:"apiVersion"`
 }
 
 // NewSession returns a new Session given an API connection URL and an API
