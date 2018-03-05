@@ -5,25 +5,26 @@ import (
 )
 
 const (
-        // HostgroupSourceDefault indicates that a Hostgroup was created in the normal way.
-        HostgroupSourcePlain = 0
+	// HostgroupSourceDefault indicates that a Hostgroup was created in the normal way.
+	HostgroupSourcePlain = 0
 
-        // HostgroupSourceDiscovery indicates that a Hostgroup was created by Host discovery.
-        HostgroupSourceDiscovery = 4
+	// HostgroupSourceDiscovery indicates that a Hostgroup was created by Host discovery.
+	HostgroupSourceDiscovery = 4
 
-        // HostgroupInternalNo indicates that a Hostgroup is used not internally by the system.
-        HostgroupInternalNo = 0
+	// HostgroupInternalNo indicates that a Hostgroup is used not internally by the system.
+	HostgroupInternalNo = 0
 
-        // HostgroupInternalYes indicates that a Hostgroup is used internally by the system.
-        HostgroupInternalYes = 1
+	// HostgroupInternalYes indicates that a Hostgroup is used internally by the system.
+	HostgroupInternalYes = 1
 )
 
 // Hostgroup represents a Zabbix Hostgroup Object returned from the Zabbix API (see zabbix documentation).
 type Hostgroup struct {
-	GroupID		string	`json:"groupid"`
-	Name		string	`json:"name"`
-	Flags		string	`json:"flags"`
-	Internal	string	`json:"internal"`
+	GroupID  string `json:"groupid"`
+	Name     string `json:"name"`
+	Flags    string `json:"flags"`
+	Internal string `json:"internal"`
+	Hosts    []Host `json:"hosts,omitempty"`
 }
 
 // HostgroupGetParams represent the parameters for a `hostgroup.get` API call (see zabbix documentation).
