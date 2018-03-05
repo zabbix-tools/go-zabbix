@@ -10,8 +10,8 @@ import (
 type jHost struct {
 	HostID   string      `json:"hostid"`
 	Hostname string      `json:"host"`
-	Flags    int         `json:"flags,string"`
-	Name     string      `json:"name"`
+	Flags    int         `json:"flags,string,omitempty"`
+	Name     string      `json:"name,omitempty"`
 	Macros   []HostMacro `json:"macros,omitempty"`
 	Groups   []Hostgroup `json:"groups,omitempty"`
 }

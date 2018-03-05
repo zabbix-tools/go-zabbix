@@ -6,10 +6,11 @@ import (
 
 // jHostgroup is a private map for the Hostgroup Zabbix API object (see zabbix documentation).
 type jHostgroup struct {
-	GroupID		string	`json:"groupid"`
-	Name		string	`json:"name"`
-	Flags		string	`json:"flags"`
-	Internal	string	`json:"internal"`
+	GroupID  string `json:"groupid"`
+	Name     string `json:"name"`
+	Flags    string `json:"flags"`
+	Internal string `json:"internal"`
+	Hosts    jHosts `json:"hosts,omitempty"`
 }
 
 // Hostgroup returns a native Go Hostgroup struct mapped from the given JSON Hostgroup data.
@@ -19,6 +20,14 @@ func (c *jHostgroup) Hostgroup() (*Hostgroup, error) {
 	hostgroup.Name = c.Name
 	hostgroup.Flags = c.Flags
 	hostgroup.Internal = c.Internal
+
+	if len(c.Hosts) > 0 {
+		if hosts, err := c.Hosts.Hosts(); err == nil {
+			hostgroup.Hosts = hosts
+		}
+
+	}
+
 	return hostgroup, nil
 }
 
