@@ -79,6 +79,10 @@ type GetParameters struct {
 	// in the given TextSearch search criteria.
 	EnableTextSearchWildcards bool `json:"searchWildcardsEnabled,omitempty"`
 
+	// Return only hosts that have inventory data matching the given wildcard search.
+	// This parameter is affected by the same additional parameters as search.
+	SearchInventory map[string]string `json:"searchInventory,omitempty"`
+
 	// SortField causes an API query to return all results sorted by the given
 	// field names.
 	SortField []string `json:"sortfield,omitempty"`

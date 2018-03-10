@@ -113,7 +113,7 @@ type HostGetParams struct {
 
 	SelectInterfaces SelectQuery `json:"selectInterfaces,omitempty"`
 
-	SelectInventory SelectQuery `json:"selectInventory,omitmepty"`
+	SelectInventory SelectQuery `json:"selectInventory,omitempty"`
 
 	SelectItems SelectQuery `json:"selectItems,omitempty"`
 
