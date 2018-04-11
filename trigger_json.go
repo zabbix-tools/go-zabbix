@@ -16,6 +16,7 @@ type jTrigger struct {
 	Severity    int          `json:"priority,string"`
 	State       int          `json:"state,string"`
 	Tags        jTriggerTags `json:"tags"`
+	LastEvent   *jEvent       `json:"lastEvent"`
 }
 
 type jTriggerTag struct {
@@ -59,6 +60,13 @@ func (c *jTrigger) Trigger() (*Trigger, error) {
 	trigger.Enabled = (c.Enabled == "1")
 	trigger.Description = c.Description
 	trigger.Expression = c.Expression
+
+	if c.LastEvent != nil {
+		trigger.LastEvent, err = c.LastEvent.Event()
+		if err != nil {
+			return nil, err
+		}
+	}
 
 	// map groups
 	trigger.Groups, err = c.Groups.Hostgroups()
