@@ -76,6 +76,11 @@ type Trigger struct {
 	// Tags is only populated if TriggerGetParams.SelectTags is given in the
 	// query parameters that returned this Trigger.
 	Tags []TriggerTag
+
+	// LastEvent is the latest event for the trigger
+	//
+	// LastEvent is only populated if TriggerGetParams.SelectLastEvent is set
+	LastEvent *Event
 }
 
 type TriggerTag struct {
