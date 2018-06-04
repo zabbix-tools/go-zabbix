@@ -47,7 +47,7 @@ func (c jHosts) Hosts() ([]Host, error) {
 		for i, jhost := range c {
 			host, err := jhost.Host()
 			if err != nil {
-				return nil, fmt.Errorf("Error unmarshalling Host %d in JSON data: %v", err)
+				return nil, fmt.Errorf("Error unmarshalling Host %d in JSON data: %v", i, err)
 			}
 
 			hosts[i] = *host

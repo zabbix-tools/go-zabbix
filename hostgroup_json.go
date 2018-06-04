@@ -42,7 +42,7 @@ func (c jHostgroups) Hostgroups() ([]Hostgroup, error) {
 		for i, jhost := range c {
 			host, err := jhost.Hostgroup()
 			if err != nil {
-				return nil, fmt.Errorf("Error unmarshalling Hostgroup %d in JSON data: %v", err)
+				return nil, fmt.Errorf("Error unmarshalling Hostgroup %d in JSON data: %v", i, err)
 			}
 
 			hosts[i] = *host
