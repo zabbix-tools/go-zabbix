@@ -12,7 +12,7 @@ func GetTestSession(t *testing.T) *Session {
 	if session == nil {
 		url := os.Getenv("ZBX_URL")
 		if url == "" {
-			url = "https://localhost:8080/api_jsonrpc.php"
+			url = "http://localhost:8080/api_jsonrpc.php"
 		}
 
 		username := os.Getenv("ZBX_USERNAME")
