@@ -39,7 +39,7 @@ func (c jTriggerTags) Tags() ([]TriggerTag, error) {
 		for i, jTriggerTag := range c {
 			tag, err := jTriggerTag.Tag()
 			if err != nil {
-				return nil, fmt.Errorf("Error unmarshalling Trigger Tag %d in JSON data: %v", err)
+				return nil, fmt.Errorf("Error unmarshalling Trigger Tag %d in JSON data: %v", i, err)
 			}
 
 			tags[i] = *tag
