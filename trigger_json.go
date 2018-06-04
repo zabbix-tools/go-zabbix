@@ -16,7 +16,7 @@ type jTrigger struct {
 	Severity    int          `json:"priority,string"`
 	State       int          `json:"state,string"`
 	Tags        jTriggerTags `json:"tags"`
-	LastEvent   *jEvent       `json:"lastEvent"`
+	LastEvent   *jEvent      `json:"lastEvent"`
 }
 
 type jTriggerTag struct {

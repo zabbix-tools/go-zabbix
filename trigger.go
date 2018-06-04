@@ -12,7 +12,7 @@ const (
 )
 
 const (
-	TriggerStateNormal  = iota
+	TriggerStateNormal = iota
 	TriggerStateUnknown
 )
 
