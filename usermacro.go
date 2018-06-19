@@ -1,5 +1,10 @@
 package zabbix
 
+// UserMacroResponse represent usermacro action response body
+type UserMacroResponse struct {
+	HostMacroIDs []string `json:"hostmacroids"`
+}
+
 // UserMacroGetParams represent the parameters for a `usermacro.get` API call (see zabbix documentation).
 type UserMacroGetParams struct {
 	GetParameters
@@ -49,11 +54,27 @@ func (c *Session) GetUserMacro(params UserMacroGetParams) ([]HostMacro, error) {
 //
 // Zabbix API docs: https://www.zabbix.com/documentation/3.0/manual/config/macros/usermacros
 func (c *Session) CreateUserMacros(macros ...HostMacro) (hostMacroIds []string, err error) {
-	var body struct {
-		HostMacroIDs []string `json:"hostmacroids"`
-	}
+	var body UserMacroResponse
 
 	if err := c.Get("usermacro.create", macros, &body); err != nil {
+		return nil, err
+	}
+
+	if (body.HostMacroIDs == nil) || (len(body.HostMacroIDs) == 0) {
+		return nil, ErrNotFound
+	}
+
+	return body.HostMacroIDs, nil
+}
+
+// DeleteUserMacros method allows to delete host macros.
+// Returns a list of deleted macro id(s).
+//
+// Zabbix API docs: https://www.zabbix.com/documentation/2.2/manual/api/reference/usermacro/delete
+func (c *Session) DeleteUserMacros(hostMacroIDs ...string) (hostMacroIds []string, err error) {
+	var body UserMacroResponse
+
+	if err := c.Get("usermacro.delete", hostMacroIds, &body); err != nil {
 		return nil, err
 	}
 
