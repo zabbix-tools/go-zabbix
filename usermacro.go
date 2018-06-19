@@ -67,7 +67,7 @@ func (c *Session) CreateUserMacros(macros ...HostMacro) (hostMacroIds []string, 
 	return body.HostMacroIDs, nil
 }
 
-// DeleteUserMacros method allows to delete host macros.
+// DeleteUserMacros method allows to delete host user macros.
 // Returns a list of deleted macro id(s).
 //
 // Zabbix API docs: https://www.zabbix.com/documentation/2.2/manual/api/reference/usermacro/delete
@@ -75,6 +75,24 @@ func (c *Session) DeleteUserMacros(hostMacroIDs ...string) (hostMacroIds []strin
 	var body UserMacroResponse
 
 	if err := c.Get("usermacro.delete", hostMacroIds, &body); err != nil {
+		return nil, err
+	}
+
+	if (body.HostMacroIDs == nil) || (len(body.HostMacroIDs) == 0) {
+		return nil, ErrNotFound
+	}
+
+	return body.HostMacroIDs, nil
+}
+
+// UpdateUserMacros method allows to update host user macros.
+// Returns a list of updated macro id(s).
+//
+// Zabbix API docs: https://www.zabbix.com/documentation/2.2/manual/api/reference/usermacro/update
+func (c *Session) UpdateUserMacros(macros ...HostMacro) (hostMacroIds []string, err error) {
+	var body UserMacroResponse
+
+	if err := c.Get("usermacro.update", hostMacroIds, &body); err != nil {
 		return nil, err
 	}
 
