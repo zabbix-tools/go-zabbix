@@ -43,3 +43,23 @@ func (c *Session) GetUserMacro(params UserMacroGetParams) ([]HostMacro, error) {
 
 	return macros, nil
 }
+
+// CreateUserMacros creates a single or multiple new user macros.
+// Returns a list of macro id(s) of created macro(s).
+//
+// Zabbix API docs: https://www.zabbix.com/documentation/3.0/manual/config/macros/usermacros
+func (c *Session) CreateUserMacros(macros ...HostMacro) (hostMacroIds []string, err error) {
+	var body struct {
+		HostMacroIDs []string `json:"hostmacroids"`
+	}
+
+	if err := c.Get("usermacro.create", macros, &body); err != nil {
+		return nil, err
+	}
+
+	if (body.HostMacroIDs == nil) || (len(body.HostMacroIDs) == 0) {
+		return nil, ErrNotFound
+	}
+
+	return body.HostMacroIDs, nil
+}
