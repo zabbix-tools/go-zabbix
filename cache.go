@@ -113,6 +113,6 @@ func NewSessionFileCache() *SessionFileCache {
 	return &SessionFileCache{
 		filePath:        "./zabbix_session",
 		sessionLifeTime: 14400, // Default TTL is 4 hours
-		filePermissions: 0655,
+		filePermissions: 0600,
 	}
 }
