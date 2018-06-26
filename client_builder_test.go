@@ -68,7 +68,7 @@ func TestSessionCache(t *testing.T) {
 		t.Error(err)
 	}
 
-	ManualTestClientBuilder(t, cache)
+	testClientBuilder(t, cache)
 
 	if err := cache.Flush(); err != nil {
 		t.Error("failed to remove a cached session file")
@@ -92,7 +92,7 @@ func compareSessionWithMock(session *Session) error {
 }
 
 // should started by TestSessionCache
-func ManualTestClientBuilder(t *testing.T, cache SessionAbstractCache) {
+func testClientBuilder(t *testing.T, cache SessionAbstractCache) {
 	username, password, url := GetTestCredentials()
 
 	if !cache.HasSession() {
