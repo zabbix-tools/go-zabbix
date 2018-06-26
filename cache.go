@@ -20,6 +20,9 @@ type SessionAbstractCache interface {
 
 	// GetSession returns cached Zabbix session
 	GetSession() (*Session, error)
+
+	// Flush removes cached session
+	Flush() error
 }
 
 // SessionFileCache is Zabbix session filesystem cache.
@@ -98,6 +101,11 @@ func (c *SessionFileCache) HasSession() bool {
 	}
 
 	return true
+}
+
+// Flush removes a cached session
+func (c *SessionFileCache) Flush() error {
+	return os.Remove(c.filePath)
 }
 
 // NewSessionFileCache creates a new instance of session file system cache
