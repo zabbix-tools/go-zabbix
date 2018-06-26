@@ -7,23 +7,29 @@ import (
 
 var session *Session
 
+func GetTestCredentials() (username string, password string, url string) {
+	url = os.Getenv("ZBX_URL")
+	if url == "" {
+		url = "http://localhost:8080/api_jsonrpc.php"
+	}
+
+	username = os.Getenv("ZBX_USERNAME")
+	if username == "" {
+		username = "Admin"
+	}
+
+	password = os.Getenv("ZBX_PASSWORD")
+	if password == "" {
+		password = "zabbix"
+	}
+
+	return username, password, url
+}
+
 func GetTestSession(t *testing.T) *Session {
 	var err error
 	if session == nil {
-		url := os.Getenv("ZBX_URL")
-		if url == "" {
-			url = "http://localhost:8080/api_jsonrpc.php"
-		}
-
-		username := os.Getenv("ZBX_USERNAME")
-		if username == "" {
-			username = "Admin"
-		}
-
-		password := os.Getenv("ZBX_PASSWORD")
-		if password == "" {
-			password = "zabbix"
-		}
+		username, password, url := GetTestCredentials()
 
 		session, err = NewSession(url, username, password)
 		if err != nil {
