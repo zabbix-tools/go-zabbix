@@ -43,7 +43,7 @@ const (
 	// EventSourceInternal is related to an Item.
 	EventObjectTypeItem
 
-	// EventObjectTypeItem indicates that an Event with Source type
+	// EventObjectTypeLLDRule indicates that an Event with Source type
 	// EventSourceInternal is related to a low-level Discovery Rule.
 	EventObjectTypeLLDRule
 )
@@ -133,6 +133,7 @@ type Event struct {
 	Hosts []Host
 }
 
+// EventGetParams is query params for event.get call
 type EventGetParams struct {
 	GetParameters
 

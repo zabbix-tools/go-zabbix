@@ -1,5 +1,5 @@
 /*
-This project provides bindings to interoperate between programs written in Go
+Package zabbix provides bindings to interoperate between programs written in Go
 language and the Zabbix monitoring API.
 
 A number of Zabbix API bindings already exist for Go with varying levels of

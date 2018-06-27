@@ -75,10 +75,13 @@ type Action struct {
 	Operations []ActionOperation
 }
 
+// ActionCondition is action condition
 type ActionCondition struct{}
 
+// ActionOperation is action operation
 type ActionOperation struct{}
 
+// ActionGetParams is query params for action.get call
 type ActionGetParams struct {
 	GetParameters
 }
