@@ -53,6 +53,7 @@ func TestSessionCache(t *testing.T) {
 
 	if !cache.HasSession() {
 		t.Errorf("session was saved but not detected again by cache")
+		return
 	}
 
 	// Try to get a cached session
