@@ -113,7 +113,7 @@ type TriggerGetParams struct {
 
 	Group string `json:"group,omitempty"`
 
-	Host string `json:"group,omitempty"`
+	Host string `json:"host,omitempty"`
 
 	// InheritedOnly filters search results to triggers which have been
 	// inherited from a template.
