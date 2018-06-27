@@ -15,7 +15,7 @@ through to v3.0 without introducing limitations to the native API methods.
 
 	import (
 		"fmt"
-		"github.com/cavaliercoder/zabbix"
+		"github.com/cavaliercoder/go-zabbix"
 	)
 
 	func main() {

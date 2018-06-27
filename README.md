@@ -20,7 +20,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/cavaliercoder/zabbix"
+	"github.com/cavaliercoder/go-zabbix"
 )
 
 func main() {
