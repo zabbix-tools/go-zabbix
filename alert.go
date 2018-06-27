@@ -102,6 +102,7 @@ type Alert struct {
 	Hosts []Host
 }
 
+// AlertGetParams is query params for alert.get call
 type AlertGetParams struct {
 	GetParameters
 

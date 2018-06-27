@@ -14,7 +14,7 @@ type jEvent struct {
 	Clock        string `json:"clock"`
 	Nanoseconds  string `json:"ns"`
 	ObjectType   string `json:"object"`
-	ObjectId     string `json:"objectid"`
+	ObjectID     string `json:"objectid"`
 	Source       string `json:"source"`
 	Value        string `json:"value"`
 	ValueChanged string `json:"value_changed"`
@@ -45,7 +45,7 @@ func (c *jEvent) Event() (*Event, error) {
 		return nil, fmt.Errorf("Error parsing Event Object Type: %v", err)
 	}
 
-	event.ObjectID, err = strconv.Atoi(c.ObjectId)
+	event.ObjectID, err = strconv.Atoi(c.ObjectID)
 	if err != nil {
 		return nil, fmt.Errorf("Error parsing Event Object ID: %v", err)
 	}
