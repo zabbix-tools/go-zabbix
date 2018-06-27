@@ -22,7 +22,7 @@ func prepareTemporaryDir(t *testing.T) (dir string, success bool) {
 
 	t.Logf("used %s directory as temporary dir", tempDir)
 
-	return "", true
+	return tempDir, true
 }
 
 func getTestFileCache(baseDir string) SessionAbstractCache {
