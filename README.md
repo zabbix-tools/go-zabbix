@@ -7,6 +7,8 @@ Go bindings for the Zabbix API
 [![GPL license](https://img.shields.io/badge/license-GPL-brightgreen.svg)](https://opensource.org/licenses/gpl-license)
 [![GoDoc](https://godoc.org/github.com/cavaliercoder/go-zabbix?status.svg)](https://godoc.org/github.com/cavaliercoder/go-zabbix)
 
+## Overview
+
 This project provides bindings to interoperate between programs written in Go
 language and the Zabbix monitoring API.
 
@@ -18,7 +20,7 @@ stable, fast, and allows for loose typing (using types such as`interface{}` or
 The package aims to have comprehensive coverage of Zabbix API methods from v1.8
 through to v3.0 without introducing limitations to the native API methods.
 
-## Example
+## Getting started
 
 ```go
 package main
@@ -47,3 +49,7 @@ func main() {
 	fmt.Printf("Connected to Zabbix API v%s", session.Version())
 }
 ```
+
+## License
+
+Released under the [GNU GPL License](https://github.com/cavaliercoder/go-zabbix/blob/master/LICENSE)
