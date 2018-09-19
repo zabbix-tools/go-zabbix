@@ -1,11 +1,14 @@
 package zabbix
 
+import "net/http"
+
 // ClientBuilder is Zabbix API client builder
 type ClientBuilder struct {
 	cache       SessionAbstractCache
 	hasCache    bool
 	url         string
 	credentials map[string]string
+	client      *http.Client
 }
 
 // WithCache sets cache for Zabbix sessions
@@ -24,6 +27,13 @@ func (builder *ClientBuilder) WithCredentials(username string, password string) 
 	return builder
 }
 
+// WithHTTPClient sets the HTTP client to use to connect to the Zabbix API
+func (builder *ClientBuilder) WithHTTPClient(client *http.Client) *ClientBuilder {
+	builder.client = client
+
+	return builder
+}
+
 // Connect creates Zabbix API client and connects to the API server
 // or provides a cached server if any cache was specified
 func (builder *ClientBuilder) Connect() (session *Session, err error) {
@@ -35,7 +45,8 @@ func (builder *ClientBuilder) Connect() (session *Session, err error) {
 	}
 
 	// Otherwise - login to a Zabbix server
-	session, err = NewSession(builder.url, builder.credentials["username"], builder.credentials["password"])
+	session = &Session{URL: builder.url, client: builder.client}
+	err = session.login(builder.credentials["username"], builder.credentials["password"])
 
 	if err != nil {
 		return nil, err
@@ -54,5 +65,6 @@ func CreateClient(apiEndpoint string) *ClientBuilder {
 	return &ClientBuilder{
 		url:         apiEndpoint,
 		credentials: make(map[string]string),
+		client:      &http.Client{},
 	}
 }

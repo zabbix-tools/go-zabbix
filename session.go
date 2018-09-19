@@ -24,6 +24,8 @@ type Session struct {
 
 	// ApiVersion is the software version string of the connected Zabbix API.
 	APIVersion string `json:"apiVersion"`
+
+	client *http.Client
 }
 
 // NewSession returns a new Session given an API connection URL and an API
@@ -36,7 +38,7 @@ type Session struct {
 // authenticate all subsequent requests in this Session.
 func NewSession(url string, username string, password string) (session *Session, err error) {
 	// create session
-	session = &Session{URL: url}
+	session = &Session{URL: url, client: &http.Client{}}
 
 	// get Zabbix API version
 	res, err := session.Do(NewRequest("apiinfo.version", nil))
@@ -49,23 +51,32 @@ func NewSession(url string, username string, password string) (session *Session,
 		return
 	}
 
+	err = session.login(username, password)
+	if err != nil {
+		return
+	}
+
+	return
+}
+
+func (c *Session) login(username, password string) error {
 	// login to API
 	params := map[string]string{
 		"user":     username,
 		"password": password,
 	}
 
-	res, err = session.Do(NewRequest("user.login", params))
+	res, err := c.Do(NewRequest("user.login", params))
 	if err != nil {
-		return nil, fmt.Errorf("Error logging in to Zabbix API: %v", err)
+		return err
 	}
 
-	err = res.Bind(&session.Token)
+	err = res.Bind(&c.Token)
 	if err != nil {
-		return
+		return err
 	}
 
-	return
+	return nil
 }
 
 // Version returns the software version string of the connected Zabbix API.
@@ -109,8 +120,7 @@ func (c *Session) Do(req *Request) (resp *Response, err error) {
 	r.Header.Add("Content-Type", "application/json-rpc")
 
 	// send request
-	client := http.Client{}
-	res, err := client.Do(r)
+	res, err := c.client.Do(r)
 	if err != nil {
 		return
 	}
