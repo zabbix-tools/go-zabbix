@@ -68,7 +68,7 @@ func (c *Session) login(username, password string) error {
 
 	res, err := c.Do(NewRequest("user.login", params))
 	if err != nil {
-		return err
+		return nil, fmt.Errorf("Error logging in to Zabbix API: %v", err)
 	}
 
 	err = res.Bind(&c.Token)
