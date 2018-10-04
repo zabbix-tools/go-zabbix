@@ -24,6 +24,7 @@ through to v3.0 without introducing limitations to the native API methods.
 		if err != nil {
 			panic(err)
 		}
+		fmt.Printf("Connected to Zabbix API v%s", session.GetVersion())
 
 		// Use session builder with caching.
 		// You can use own cache by implementing SessionAbstractCache interface
@@ -45,7 +46,7 @@ through to v3.0 without introducing limitations to the native API methods.
 			Connect()
 
 
-		fmt.Printf("Connected to Zabbix API v%s", session.Version())
+		fmt.Printf("Connected to Zabbix API v%s", session.GetVersion())
 	}
 
 For more information see: https://github.com/cavaliercoder/go-zabbix

@@ -43,7 +43,8 @@ func GetTestSession(t *testing.T) *Session {
 func TestSession(t *testing.T) {
 	s := GetTestSession(t)
 
-	if s.Version() == "" {
+	v, err := s.GetVersion()
+	if err != nil || v == "" {
 		t.Errorf("No API version found for session")
 	}
 }

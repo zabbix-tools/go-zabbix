@@ -38,28 +38,18 @@ type Session struct {
 // authenticate all subsequent requests in this Session.
 func NewSession(url string, username string, password string) (session *Session, err error) {
 	// create session
-	session = &Session{URL: url, client: &http.Client{}}
-
-	// get Zabbix API version
-	res, err := session.Do(NewRequest("apiinfo.version", nil))
-	if err != nil {
-		return nil, fmt.Errorf("Error getting Zabbix API version: %v", err)
-	}
-
-	err = res.Bind(&session.APIVersion)
-	if err != nil {
-		return
-	}
-
+	session = &Session{URL: url}
 	err = session.login(username, password)
-	if err != nil {
-		return
-	}
-
 	return
 }
 
 func (c *Session) login(username, password string) error {
+	// get Zabbix API version
+	_, err := c.GetVersion()
+	if err != nil {
+		return fmt.Errorf("Failed to retrieve Zabbix API version: %v", err)
+	}
+
 	// login to API
 	params := map[string]string{
 		"user":     username,
@@ -73,15 +63,27 @@ func (c *Session) login(username, password string) error {
 
 	err = res.Bind(&c.Token)
 	if err != nil {
-		return err
+		return fmt.Errorf("Error failed to decode Zabbix login response: %v", err)
 	}
 
 	return nil
 }
 
-// Version returns the software version string of the connected Zabbix API.
-func (c *Session) Version() string {
-	return c.APIVersion
+// GetVersion returns the software version string of the connected Zabbix API.
+func (c *Session) GetVersion() (string, error) {
+	if c.APIVersion == "" {
+		// get Zabbix API version
+		res, err := c.Do(NewRequest("apiinfo.version", nil))
+		if err != nil {
+			return "", err
+		}
+
+		err = res.Bind(&c.APIVersion)
+		if err != nil {
+			return "", err
+		}
+	}
+	return c.APIVersion, nil
 }
 
 // AuthToken returns the authentication token used by this session to
@@ -120,7 +122,11 @@ func (c *Session) Do(req *Request) (resp *Response, err error) {
 	r.Header.Add("Content-Type", "application/json-rpc")
 
 	// send request
-	res, err := c.client.Do(r)
+	client := c.client
+	if client == nil {
+		client = http.DefaultClient
+	}
+	res, err := client.Do(r)
 	if err != nil {
 		return
 	}
