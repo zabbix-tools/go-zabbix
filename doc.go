@@ -27,10 +27,20 @@ through to v3.0 without introducing limitations to the native API methods.
 
 		// Use session builder with caching.
 		// You can use own cache by implementing SessionAbstractCache interface
+		// Optionally an http.Client can be passed to the builder, allowing to skip TLS verification,
+		// pass proxy settings, etc.
 
+		client := &http.Client{
+			Transport: &http.Transport{
+				TLSClientConfig: &tls.Config{
+					InsecureSkipVerify: true
+				}
+			}
+		}
 		cache := zabbix.NewSessionFileCache().SetFilePath("./zabbix_session")
 		session, err := zabbix.CreateClient("http://zabbix/api_jsonrpc.php").
 			WithCache(cache).
+			WithHTTPClient(client).
 			WithCredentials("Admin", "zabbix").
 			Connect()
 
