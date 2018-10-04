@@ -26,7 +26,11 @@ through to v3.0 without introducing limitations to the native API methods.
 package main
 
 import (
+	"crypto/tls"
 	"fmt"
+	"log"
+	"net/http"
+
 	"github.com/cavaliercoder/go-zabbix"
 )
 
@@ -39,12 +43,26 @@ func main() {
 
 	// Use session builder with caching.
 	// You can use own cache by implementing SessionAbstractCache interface
+	// Optionally an http.Client can be passed to the builder, allowing to skip TLS verification,
+	// pass proxy settings, etc.
+
+	client := &http.Client{
+		Transport: &http.Transport{
+			TLSClientConfig: &tls.Config{
+				InsecureSkipVerify: true
+			}
+		}
+	}
 
 	cache := zabbix.NewSessionFileCache().SetFilePath("./zabbix_session")
 	session, err := zabbix.CreateClient("http://zabbix/api_jsonrpc.php").
 		WithCache(cache).
+		WithHTTPClient(client).
 		WithCredentials("Admin", "zabbix").
 		Connect()
+	if err != nil {
+		log.Fatalf("%v\n", err)
+	}
 
 	fmt.Printf("Connected to Zabbix API v%s", session.Version())
 }
