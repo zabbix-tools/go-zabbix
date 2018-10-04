@@ -40,6 +40,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	fmt.Printf("Connected to Zabbix API v%s", session.GetVersion())
 
 	// Use session builder with caching.
 	// You can use own cache by implementing SessionAbstractCache interface
@@ -64,7 +65,7 @@ func main() {
 		log.Fatalf("%v\n", err)
 	}
 
-	fmt.Printf("Connected to Zabbix API v%s", session.Version())
+	fmt.Printf("Connected to Zabbix API v%s", session.GetVersion())
 }
 ```
 
