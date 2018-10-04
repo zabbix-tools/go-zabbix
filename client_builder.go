@@ -40,6 +40,7 @@ func (builder *ClientBuilder) Connect() (session *Session, err error) {
 	// Check if any cache was defined and if it has a valid cached session
 	if builder.hasCache && builder.cache.HasSession() {
 		if session, err = builder.cache.GetSession(); err == nil {
+			session.client = builder.client
 			return session, nil
 		}
 	}
