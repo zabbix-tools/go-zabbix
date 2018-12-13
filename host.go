@@ -10,6 +10,39 @@ const (
 
 	// HostSourceDiscovery indicates that a Host was created by Host discovery.
 	HostSourceDiscovery = 4
+
+	// HostAvailabilityUnknown Unknown availability of host, never has come online
+	HostAvailabilityUnknown = 0
+
+	// HostAvailabilityAvailable Host is available
+	HostAvailabilityAvailable = 1
+
+	// HostAvailabilityUnavailable Host is NOT available
+	HostAvailabilityUnavailable = 2
+
+	// HostInventoryModeDisabled Host inventory in disabled
+	HostInventoryModeDisabled = -1
+
+	// HostInventoryModeManual Host inventory is managed manually
+	HostInventoryModeManual = 0
+
+	// HostInventoryModeAutomatic Host inventory is managed automatically
+	HostInventoryModeAutomatic = 1
+
+	// HostTLSConnectUnencryped connect unencrypted to or from host
+	HostTLSConnectUnencryped = 1
+
+	// HostTLSConnectPSK connect with PSK to or from host
+	HostTLSConnectPSK = 2
+
+	// HostTLSConnectCertificate connect with certificate to or from host
+	HostTLSConnectCertificate = 4
+
+	// HostStatusMonitored Host is monitored
+	HostStatusMonitored = 0
+
+	// HostStatusUnmonitored Host is not monitored
+	HostStatusUnmonitored = 1
 )
 
 // Host represents a Zabbix Host returned from the Zabbix API.
@@ -34,6 +67,32 @@ type Host struct {
 
 	// Groups contains all Host Groups assigned to the Host.
 	Groups []Hostgroup
+
+	// Status of the host
+	Status int
+
+	// Availbility of host
+	Available int
+
+	// Description of host
+	Description string
+
+	// Inventory mode
+	InventoryMode int
+
+	// HostID of the proxy managing this host
+	ProxyHostID int
+
+	// How should we connect to host
+	TLSConnect int
+
+	// What type of connections we accept from host
+	TLSAccept int
+
+	TLSIssuer      string
+	TLSSubject     string
+	TLSPSKIdentity string
+	TLSPSK         string
 }
 
 // HostGetParams represent the parameters for a `host.get` API call.

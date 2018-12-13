@@ -14,6 +14,19 @@ type jHost struct {
 	Name     string      `json:"name,omitempty"`
 	Macros   []HostMacro `json:"macros,omitempty"`
 	Groups   []Hostgroup `json:"groups,omitempty"`
+
+	Available     int    `json:"available,string"`
+	Description   string `json:"description,omitempty"`
+	InventoryMode int    `json:"inventory_mode"`
+	ProxyHostID   int    `json:"proxy_hostid,string"`
+	Status        int    `json:"status,string"`
+
+	TLSConnect     int    `json:"tls_connect,string"`
+	TLSAccept      int    `json:"tls_accept,string"`
+	TLSIssuer      string `json:"tls_issuer,omitempty"`
+	TLSSubject     string `json:"tls_subject,omitempty"`
+	TLSPSKIdentity string `json:"tls_psk_identity,omitempty"`
+	TLSPSK         string `json:"tls_psk,omitempty"`
 }
 
 // Host returns a native Go Host struct mapped from the given JSON Host data.
@@ -26,6 +39,17 @@ func (c *jHost) Host() (*Host, error) {
 	host.DisplayName = c.Name
 	host.Macros = c.Macros
 	host.Groups = c.Groups
+	host.Available = c.Available
+	host.Description = c.Description
+	host.InventoryMode = c.InventoryMode
+	host.Status = c.Status
+	host.ProxyHostID = c.ProxyHostID
+	host.TLSConnect = c.TLSConnect
+	host.TLSAccept = c.TLSAccept
+	host.TLSIssuer = c.TLSIssuer
+	host.TLSSubject = c.TLSSubject
+	host.TLSPSKIdentity = c.TLSPSKIdentity
+	host.TLSPSK = c.TLSPSK
 	/*
 		host.Source, err = strconv.Atoi(c.Flags)
 		if err != nil {
