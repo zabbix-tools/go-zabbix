@@ -171,6 +171,14 @@ type EventGetParams struct {
 	// to the given ID.
 	MaxEventID string `json:"eventid_till,omitempty"`
 
+	// MinTime filters search results to Events with a timestamp lesser than or
+	// equal to the given timestamp.
+	MinTime int64 `json:"time_from,omitempty"`
+
+	// MaxTime filters search results to Events with a timestamp greater than or
+	// equal to the given timestamp.
+	MaxTime int64 `json:"time_till,omitempty"`
+
 	// Value filters search results to Events with the given values. Each value
 	// must be one of the EventValue constants for the given ObjectType.
 	Value []int `json:"value,omitempty"`
