@@ -97,7 +97,7 @@ type Trigger struct {
 	// LastEvent is only populated if TriggerGetParams.SelectLastEvent is set
 	LastEvent *Event
 
-	// URL is a link to the trigger in Zabbix
+	// URL is a link to the trigger graph in Zabbix
 	URL string
 }
 
