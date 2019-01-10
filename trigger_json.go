@@ -17,6 +17,7 @@ type jTrigger struct {
 	State       int          `json:"state,string"`
 	Tags        jTriggerTags `json:"tags"`
 	LastEvent   *jEvent      `json:"lastEvent"`
+	URL         string       `json:"url"`
 }
 
 type jTriggerTag struct {
@@ -60,6 +61,7 @@ func (c *jTrigger) Trigger() (*Trigger, error) {
 	trigger.Enabled = (c.Enabled == "1")
 	trigger.Description = c.Description
 	trigger.Expression = c.Expression
+	trigger.URL = c.URL
 
 	if c.LastEvent != nil {
 		trigger.LastEvent, err = c.LastEvent.Event()
