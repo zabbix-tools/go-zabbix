@@ -25,6 +25,10 @@ type Item struct {
 
 	// LastValue is the last value of the Item.
 	LastValue string
+
+	// LastValueType is the type of LastValue
+	// 0 - float; 1 - text; 3 - int;
+	LastValueType int
 }
 
 
