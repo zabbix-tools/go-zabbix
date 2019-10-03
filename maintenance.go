@@ -1,6 +1,7 @@
 package zabbix
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 	"time"
@@ -125,15 +126,18 @@ func (m *MaintenanceCreateParams) FillHostIDs(session *Session) error {
 		return err
 	}
 
+	err = errors.New("Failed to tind ID by host name")
 	for _, name := range m.HostNames {
 		for _, host := range hosts {
 			if strings.ToUpper(strings.Trim(host.Hostname, " ")) == strings.ToUpper(strings.Trim(name, " ")) {
 				m.HostIDs = append(m.HostIDs, host.HostID)
+
+				err = nil
 			}
 		}
 	}
 
-	return nil
+	return err
 }
 
 func (c *MaintenanceCreateParams) FillFields(Object *Maintenance) *MaintenanceCreateParams {
