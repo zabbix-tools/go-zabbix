@@ -10,7 +10,7 @@ import (
 type MaintenanceType int
 type TagsEvaltype int
 
-var ErrNotHostFound = errors.New("Failed to tind ID by host name")
+var ErrMaintenanceHostNotFound = errors.New("Failed to find ID by host name")
 
 const (
 	withDataCollection MaintenanceType = iota
@@ -128,7 +128,7 @@ func (m *MaintenanceCreateParams) FillHostIDs(session *Session) error {
 		return err
 	}
 
-	err = ErrNotHostFound
+	err = ErrMaintenanceHostNotFound
 	for _, name := range m.HostNames {
 		for _, host := range hosts {
 			if strings.ToUpper(strings.Trim(host.Hostname, " ")) == strings.ToUpper(strings.Trim(name, " ")) {
