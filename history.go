@@ -41,7 +41,7 @@ type HistoryGetParams struct {
 	// Possible values: 0 - numeric float, 1 - character, 2 - log,
 	// 3 - numeric signed, 4, text
 	// Default: 3
-	History int `json:"history,omitempty"`
+	History int `json:"history"`
 
 	// HistoryIDs filters search results to histories with the given History ID's.
 	HistoryIDs []string `json:"historyids,omitempty"`
