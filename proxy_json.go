@@ -53,3 +53,25 @@ func (c *jProxy) Proxy() (*Proxy, error) {
 
 	return proxy, nil
 }
+
+type jProxies []jProxy
+
+// Proxies returns a native Go slice of Proxies mapped from the given JSON
+// Proxies data.
+func (c jProxies) Proxies() ([]Proxy, error) {
+	if c != nil {
+		proxies := make([]Proxy, len(c))
+		for i, jproxy := range c {
+			proxy, err := jproxy.Proxy()
+			if err != nil {
+				return nil, fmt.Errorf("Error unmarshalling Proxy %d in JSON data: %v", i, err)
+			}
+
+			proxies[i] = *proxy
+
+			return proxies, nil
+		}
+	}
+
+	return nil, nil
+}
