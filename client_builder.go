@@ -40,13 +40,13 @@ func (builder *ClientBuilder) Connect() (session *Session, err error) {
 	// Check if any cache was defined and if it has a valid cached session
 	if builder.hasCache && builder.cache.HasSession() {
 		if session, err = builder.cache.GetSession(); err == nil {
-			session.client = builder.client
+			session.Client = builder.client
 			return session, nil
 		}
 	}
 
 	// Otherwise - login to a Zabbix server
-	session = &Session{URL: builder.url, client: builder.client}
+	session = &Session{URL: builder.url, Client: builder.client}
 	err = session.login(builder.credentials["username"], builder.credentials["password"])
 
 	if err != nil {

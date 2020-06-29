@@ -25,7 +25,7 @@ type Session struct {
 	// ApiVersion is the software version string of the connected Zabbix API.
 	APIVersion string `json:"apiVersion"`
 
-	client *http.Client
+	Client *http.Client
 }
 
 // NewSession returns a new Session given an API connection URL and an API
@@ -122,7 +122,7 @@ func (c *Session) Do(req *Request) (resp *Response, err error) {
 	r.Header.Add("Content-Type", "application/json-rpc")
 
 	// send request
-	client := c.client
+	client := c.Client
 	if client == nil {
 		client = http.DefaultClient
 	}
