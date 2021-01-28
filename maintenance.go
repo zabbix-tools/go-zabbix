@@ -29,7 +29,7 @@ type Maintenance struct {
 	MaintenanceID string
 	Name          string
 	ActiveSince   time.Time
-	activeTill    time.Time
+	ActiveTill    time.Time
 	Description   string
 	// Service period in hours
 	ServicePeriod       int
@@ -64,7 +64,7 @@ type MaintenanceGetParams struct {
 }
 
 type MaintenanceCreateParams struct {
-	jMaintenance
+	JMaintenance
 
 	Groupids []string `json:"groupids,omitempty"`
 	// Hosts name
@@ -77,7 +77,7 @@ type MaintenanceCreateParams struct {
 // GetMaintenance queries the Zabbix API for Maintenance matching the given search
 // parameters.
 func (s *Session) GetMaintenance(params *MaintenanceGetParams) ([]Maintenance, error) {
-	jmaintenance := make([]jMaintenance, 0)
+	jmaintenance := make([]JMaintenance, 0)
 	err := s.Get("maintenance.get", params, &jmaintenance)
 	if err != nil {
 		return nil, err
