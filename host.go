@@ -1,9 +1,5 @@
 package zabbix
 
-import (
-	"fmt"
-)
-
 const (
 	// HostSourceDefault indicates that a Host was created in the normal way.
 	HostSourceDefault = 0
@@ -17,23 +13,28 @@ const (
 // See: https://www.zabbix.com/documentation/2.2/manual/config/hosts
 type Host struct {
 	// HostID is the unique ID of the Host.
-	HostID string
+	HostID string `json:"hostid"`
 
 	// Hostname is the technical name of the Host.
-	Hostname string
+	Hostname string `json:"host"`
 
 	// DisplayName is the visible name of the Host.
-	DisplayName string
+	DisplayName string `json:"name,omitempty"`
 
 	// Source is the origin of the Host and must be one of the HostSource
 	// constants.
-	Source int
+	Source int `json:"flags,string,omitempty"`
 
 	// Macros contains all Host Macros assigned to the Host.
-	Macros []HostMacro
+	Macros []HostMacro `json:"macros,omitempty"`
 
 	// Groups contains all Host Groups assigned to the Host.
-	Groups []Hostgroup
+	Groups []Hostgroup `json:"groups,omitempty"`
+
+	MaintenanceStatus string `json:"maintenance_status"`
+	MaintenanceID     string `json:"maintenanceid"`
+	MaintenanceType   string `json:"maintenance_type"`
+	MaintenanceFrom   string `json:"maintenance_from"`
 }
 
 // HostGetParams represent the parameters for a `host.get` API call.
@@ -130,7 +131,7 @@ type HostGetParams struct {
 // ErrEventNotFound is returned if the search result set is empty.
 // An error is returned if a transport, parsing or API error occurs.
 func (c *Session) GetHosts(params HostGetParams) ([]Host, error) {
-	hosts := make([]jHost, 0)
+	hosts := make([]Host, 0)
 	err := c.Get("host.get", params, &hosts)
 	if err != nil {
 		return nil, err
@@ -140,16 +141,5 @@ func (c *Session) GetHosts(params HostGetParams) ([]Host, error) {
 		return nil, ErrNotFound
 	}
 
-	// map JSON Events to Go Events
-	out := make([]Host, len(hosts))
-	for i, jhost := range hosts {
-		host, err := jhost.Host()
-		if err != nil {
-			return nil, fmt.Errorf("Error mapping Host %d in response: %v", i, err)
-		}
-
-		out[i] = *host
-	}
-
-	return out, nil
+	return hosts, nil
 }

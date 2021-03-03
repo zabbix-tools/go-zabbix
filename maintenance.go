@@ -74,6 +74,10 @@ type MaintenanceCreateParams struct {
 	Tags        []string      `json:"tags,omitempty"`
 }
 
+type MaintenanceCreateResponse struct {
+	IDs []string `json:"maintenanceids"`
+}
+
 // GetMaintenance queries the Zabbix API for Maintenance matching the given search
 // parameters.
 func (s *Session) GetMaintenance(params *MaintenanceGetParams) ([]Maintenance, error) {
@@ -100,17 +104,13 @@ func (s *Session) GetMaintenance(params *MaintenanceGetParams) ([]Maintenance, e
 	return out, nil
 }
 
-func (s *Session) CreateMaintenance(params *MaintenanceCreateParams) (err error) {
+func (s *Session) CreateMaintenance(params *MaintenanceCreateParams) (response MaintenanceCreateResponse, err error) {
 	if err = params.FillHostIDs(s); err != nil {
-		return err
+		return
 	}
 
-	response := make(map[string]interface{})
-	if err = s.Get("maintenance.create", params, &response); err != nil {
-		return err
-	}
-
-	return nil
+	err = s.Get("maintenance.create", params, &response)
+	return
 }
 
 func (m *Maintenance) Delete(session *Session) error {
