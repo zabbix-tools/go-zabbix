@@ -105,8 +105,10 @@ func (s *Session) GetMaintenance(params *MaintenanceGetParams) ([]Maintenance, e
 }
 
 func (s *Session) CreateMaintenance(params *MaintenanceCreateParams) (response MaintenanceCreateResponse, err error) {
-	if err = params.FillHostIDs(s); err != nil {
-		return
+	if len(params.HostNames) > 0 {
+		if err = params.FillHostIDs(s); err != nil {
+			return
+		}
 	}
 
 	err = s.Get("maintenance.create", params, &response)
