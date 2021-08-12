@@ -6,6 +6,39 @@ const (
 
 	// HostSourceDiscovery indicates that a Host was created by Host discovery.
 	HostSourceDiscovery = 4
+
+	// HostAvailabilityUnknown Unknown availability of host, never has come online
+	HostAvailabilityUnknown = 0
+
+	// HostAvailabilityAvailable Host is available
+	HostAvailabilityAvailable = 1
+
+	// HostAvailabilityUnavailable Host is NOT available
+	HostAvailabilityUnavailable = 2
+
+	// HostInventoryModeDisabled Host inventory in disabled
+	HostInventoryModeDisabled = -1
+
+	// HostInventoryModeManual Host inventory is managed manually
+	HostInventoryModeManual = 0
+
+	// HostInventoryModeAutomatic Host inventory is managed automatically
+	HostInventoryModeAutomatic = 1
+
+	// HostTLSConnectUnencryped connect unencrypted to or from host
+	HostTLSConnectUnencryped = 1
+
+	// HostTLSConnectPSK connect with PSK to or from host
+	HostTLSConnectPSK = 2
+
+	// HostTLSConnectCertificate connect with certificate to or from host
+	HostTLSConnectCertificate = 4
+
+	// HostStatusMonitored Host is monitored
+	HostStatusMonitored = 0
+
+	// HostStatusUnmonitored Host is not monitored
+	HostStatusUnmonitored = 1
 )
 
 // Host represents a Zabbix Host returned from the Zabbix API.
@@ -35,6 +68,34 @@ type Host struct {
 	MaintenanceID     string `json:"maintenanceid"`
 	MaintenanceType   string `json:"maintenance_type"`
 	MaintenanceFrom   string `json:"maintenance_from"`
+
+	// Status of the host
+	Status int `json:"status,string"`
+
+	// Availbility of host
+	// *NOTE*: this field was removed in Zabbix 5.4
+	// See: https://support.zabbix.com/browse/ZBXNEXT-6311
+	Available int `json:"available,string,omitempty"`
+
+	// Description of host
+	Description string `json:"description"`
+
+	// Inventory mode
+	InventoryMode int `json:"inventory_mode"`
+
+	// HostID of the proxy managing this host
+	ProxyHostID string `json:"proxy_hostid"`
+
+	// How should we connect to host
+	TLSConnect int `json:"tls_connect,string"`
+
+	// What type of connections we accept from host
+	TLSAccept int `json:"tls_accept,string"`
+
+	TLSIssuer      string `json:"tls_issuer"`
+	TLSSubject     string `json:"tls_subject"`
+	TLSPSKIdentity string `json:"tls_psk_identity"`
+	TLSPSK         string `json:"tls_psk"`
 }
 
 // HostGetParams represent the parameters for a `host.get` API call.
