@@ -3,10 +3,11 @@ package zabbix
 import (
 	"fmt"
 	"strconv"
+	"time"
 )
 
 // jAction is a private map for the Zabbix API Action object.
-// See: https://www.zabbix.com/documentation/2.2/manual/api/reference/action/object
+// https://www.zabbix.com/documentation/current/manual/api/reference/action/object
 type jAction struct {
 	ActionID     string `json:"actionid"`
 	EscPeriod    string `json:"esc_period"`
@@ -36,10 +37,11 @@ func (c *jAction) Action() (*Action, error) {
 	action.RecoveryMessageEnabled = (c.RecoveryMsg == "1")
 	action.Enabled = (c.Status == "0")
 
-	action.StepDuration, err = strconv.Atoi(c.EscPeriod)
+	duration, err := time.ParseDuration(c.EscPeriod)
 	if err != nil {
 		return nil, fmt.Errorf("Error parsing Action Step Duration: %v", err)
 	}
+	action.StepDuration = int(duration.Seconds())
 
 	if c.EvalType != "" { // removed in v2.4
 		action.EvaluationType, err = strconv.Atoi(c.EvalType)

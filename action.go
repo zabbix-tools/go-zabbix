@@ -20,7 +20,7 @@ const (
 
 // Action represents a Zabbix Action returned from the Zabbix API.
 //
-// See: https://www.zabbix.com/documentation/2.2/manual/config/notifications/action
+// See: https://www.zabbix.com/documentation/current/manual/api/reference/action/object
 type Action struct {
 	// ActionID is the unique ID of the Action.
 	ActionID string
