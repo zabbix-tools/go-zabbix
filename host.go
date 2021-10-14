@@ -21,6 +21,7 @@ type Host struct {
 	// DisplayName is the visible name of the Host.
 	DisplayName string `json:"name,omitempty"`
 
+	ProxyID string `json:"proxy_hostid,omitempty"`
 	// Source is the origin of the Host and must be one of the HostSource
 	// constants.
 	Source int `json:"flags,string,omitempty"`
