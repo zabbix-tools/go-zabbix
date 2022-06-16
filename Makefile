@@ -24,6 +24,7 @@ docker-run:
 		--env="POSTGRES_PASSWORD=zabbix" \
 		--link=zabbix-db:zabbix-db \
 		--net=zabbix-net \
+		-p 10051:10051 \
 		zabbix/zabbix-server-pgsql:5.4.5-alpine || :
 	sleep 5
 	docker run \
