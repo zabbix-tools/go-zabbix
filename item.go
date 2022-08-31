@@ -29,6 +29,9 @@ type Item struct {
 	// LastValueType is the type of LastValue
 	// 0 - float; 1 - text; 3 - int;
 	LastValueType int
+
+	// ItemError is the error messege of the Item.
+	ItemError string
 }
 
 
