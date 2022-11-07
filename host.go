@@ -69,6 +69,8 @@ type Host struct {
 	MaintenanceType   string `json:"maintenance_type"`
 	MaintenanceFrom   string `json:"maintenance_from"`
 
+	Inventory map[string]string `json:"inventory,omitempty"`
+	
 	// Status of the host
 	Status int `json:"status,string"`
 
@@ -81,7 +83,7 @@ type Host struct {
 	Description string `json:"description"`
 
 	// Inventory mode
-	InventoryMode int `json:"inventory_mode"`
+	InventoryMode int `json:"inventory_mode,string"`
 
 	// HostID of the proxy managing this host
 	ProxyHostID string `json:"proxy_hostid"`
