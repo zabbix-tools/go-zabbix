@@ -31,6 +31,11 @@ type Item struct {
 	LastValueType int
 }
 
+type ItemTagFilter struct {
+	Tag      string `json:"tag"`
+	Value    string `json:"value"`
+	Operator int    `json:"operator"`
+}
 
 type ItemGetParams struct {
 	GetParameters
@@ -100,6 +105,8 @@ type ItemGetParams struct {
 	// WithTriggers flag return only items that are used in triggers
 	WithTriggers bool `json:"with_triggers,omitempty"`
 
+	// Filter by tags
+	Tags []ItemTagFilter `json:"tags,omitempty"`
 }
 
 // GetItems queries the Zabbix API for Items matching the given search
