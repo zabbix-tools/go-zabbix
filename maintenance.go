@@ -142,14 +142,14 @@ func (m *MaintenanceCreateParams) FillHostIDs(session *Session) error {
 	return err
 }
 
-func (c *MaintenanceCreateParams) FillFields(Object *Maintenance) *MaintenanceCreateParams {
-	c.ActiveSince = Object.ActiveSince.Unix()
-	c.ActiveTill = Object.ActiveSince.Add(time.Hour * time.Duration(Object.ServicePeriod)).Unix()
-	c.Description = Object.Description
-	c.MaintenanceID = Object.MaintenanceID
-	c.Name = Object.Name
-	c.TagsEvaltype = int(Object.Type)
-	c.MaintenanceType = int(Object.ActionEvalTypeAndOr)
+func (m *MaintenanceCreateParams) FillFields(Object *Maintenance) *MaintenanceCreateParams {
+	m.ActiveSince = Object.ActiveSince.Unix()
+	m.ActiveTill = Object.ActiveSince.Add(time.Hour * time.Duration(Object.ServicePeriod)).Unix()
+	m.Description = Object.Description
+	m.MaintenanceID = Object.MaintenanceID
+	m.Name = Object.Name
+	m.TagsEvaltype = int(Object.Type)
+	m.MaintenanceType = int(Object.ActionEvalTypeAndOr)
 
-	return c
+	return m
 }
