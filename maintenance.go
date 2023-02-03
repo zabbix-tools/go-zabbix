@@ -131,7 +131,7 @@ func (m *MaintenanceCreateParams) FillHostIDs(session *Session) error {
 	err = ErrMaintenanceHostNotFound
 	for _, name := range m.HostNames {
 		for _, host := range hosts {
-			if strings.ToUpper(strings.Trim(host.Hostname, " ")) == strings.ToUpper(strings.Trim(name, " ")) {
+			if strings.EqualFold(strings.Trim(host.Hostname, " "), strings.Trim(name, " ")) {
 				m.HostIDs = append(m.HostIDs, host.HostID)
 
 				err = nil
