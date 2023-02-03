@@ -12,7 +12,7 @@ type UnixTimestamp struct {
 }
 
 func (t UnixTimestamp) MarshalJSON() ([]byte, error) {
-	stamp := fmt.Sprintf("\"%s\"", t.Unix())
+	stamp := fmt.Sprintf("\"%v\"", t.Unix())
 	return []byte(stamp), nil
 }
 

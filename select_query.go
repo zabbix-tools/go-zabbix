@@ -13,8 +13,7 @@ type SelectQuery interface{}
 //
 // For example, for a Host search query:
 //
-//     query := SelectFields{ "hostid", "host", "name" }
-//
+//	query := SelectFields{ "hostid", "host", "name" }
 type SelectFields []string
 
 const (

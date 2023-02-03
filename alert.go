@@ -124,9 +124,9 @@ type AlertGetParams struct {
 //
 // ErrNotFound is returned if the search result set is empty.
 // An error is returned if a transport, parsing or API error occurs.
-func (c *Session) GetAlerts(params AlertGetParams) ([]Alert, error) {
+func (s *Session) GetAlerts(params AlertGetParams) ([]Alert, error) {
 	alerts := make([]jAlert, 0)
-	err := c.Get("alert.get", params, &alerts)
+	err := s.Get("alert.get", params, &alerts)
 	if err != nil {
 		return nil, err
 	}

@@ -25,7 +25,6 @@ func (c *jHostgroup) Hostgroup() (*Hostgroup, error) {
 		if hosts, err := c.Hosts.Hosts(); err == nil {
 			hostgroup.Hosts = hosts
 		}
-
 	}
 
 	return hostgroup, nil

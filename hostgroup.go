@@ -112,9 +112,9 @@ type HostgroupGetParams struct {
 //
 // ErrEventNotFound is returned if the search result set is empty.
 // An error is returned if a transport, parsing or API error occurs.
-func (c *Session) GetHostgroups(params HostgroupGetParams) ([]Hostgroup, error) {
+func (s *Session) GetHostgroups(params HostgroupGetParams) ([]Hostgroup, error) {
 	hostgroups := make([]jHostgroup, 0)
-	err := c.Get("hostgroup.get", params, &hostgroups)
+	err := s.Get("hostgroup.get", params, &hostgroups)
 	if err != nil {
 		return nil, err
 	}

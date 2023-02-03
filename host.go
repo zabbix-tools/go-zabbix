@@ -191,9 +191,9 @@ type HostGetParams struct {
 //
 // ErrEventNotFound is returned if the search result set is empty.
 // An error is returned if a transport, parsing or API error occurs.
-func (c *Session) GetHosts(params HostGetParams) ([]Host, error) {
+func (s *Session) GetHosts(params HostGetParams) ([]Host, error) {
 	hosts := make([]Host, 0)
-	err := c.Get("host.get", params, &hosts)
+	err := s.Get("host.get", params, &hosts)
 	if err != nil {
 		return nil, err
 	}

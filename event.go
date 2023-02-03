@@ -205,9 +205,9 @@ type EventGetParams struct {
 //
 // ErrEventNotFound is returned if the search result set is empty.
 // An error is returned if a transport, parsing or API error occurs.
-func (c *Session) GetEvents(params EventGetParams) ([]Event, error) {
+func (s *Session) GetEvents(params EventGetParams) ([]Event, error) {
 	events := make([]jEvent, 0)
-	err := c.Get("event.get", params, &events)
+	err := s.Get("event.get", params, &events)
 	if err != nil {
 		return nil, err
 	}

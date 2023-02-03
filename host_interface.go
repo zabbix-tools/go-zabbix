@@ -74,9 +74,9 @@ type HostInterfaceGetParams struct {
 //
 // ErrEventNotFound is returned if the search result set is empty.
 // An error is returned if a transport, parsing or API error occurs.
-func (c *Session) GetHostInterfaces(params HostInterfaceGetParams) ([]HostInterface, error) {
+func (s *Session) GetHostInterfaces(params HostInterfaceGetParams) ([]HostInterface, error) {
 	hostInterfaces := make([]HostInterface, 0)
-	err := c.Get("hostinterface.get", params, &hostInterfaces)
+	err := s.Get("hostinterface.get", params, &hostInterfaces)
 	if err != nil {
 		return nil, err
 	}

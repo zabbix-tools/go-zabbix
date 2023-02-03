@@ -35,10 +35,10 @@ type UserMacroGetParams struct {
 //
 // ErrEventNotFound is returned if the search result set is empty.
 // An error is returned if a transport, parsing or API error occurs.
-func (c *Session) GetUserMacro(params UserMacroGetParams) ([]HostMacro, error) {
+func (s *Session) GetUserMacro(params UserMacroGetParams) ([]HostMacro, error) {
 	macros := make([]HostMacro, 0)
 
-	if err := c.Get("usermacro.get", params, &macros); err != nil {
+	if err := s.Get("usermacro.get", params, &macros); err != nil {
 		return nil, err
 	}
 
@@ -53,10 +53,10 @@ func (c *Session) GetUserMacro(params UserMacroGetParams) ([]HostMacro, error) {
 // Returns a list of macro id(s) of created macro(s).
 //
 // Zabbix API docs: https://www.zabbix.com/documentation/3.0/manual/config/macros/usermacros
-func (c *Session) CreateUserMacros(macros ...HostMacro) (hostMacroIds []string, err error) {
+func (s *Session) CreateUserMacros(macros ...HostMacro) (hostMacroIds []string, err error) {
 	var body UserMacroResponse
 
-	if err := c.Get("usermacro.create", macros, &body); err != nil {
+	if err := s.Get("usermacro.create", macros, &body); err != nil {
 		return nil, err
 	}
 
@@ -71,10 +71,10 @@ func (c *Session) CreateUserMacros(macros ...HostMacro) (hostMacroIds []string, 
 // Returns a list of deleted macro id(s).
 //
 // Zabbix API docs: https://www.zabbix.com/documentation/2.2/manual/api/reference/usermacro/delete
-func (c *Session) DeleteUserMacros(hostMacroIDs ...string) (hostMacroIds []string, err error) {
+func (s *Session) DeleteUserMacros(hostMacroIDs ...string) (hostMacroIds []string, err error) {
 	var body UserMacroResponse
 
-	if err := c.Get("usermacro.delete", hostMacroIds, &body); err != nil {
+	if err := s.Get("usermacro.delete", hostMacroIds, &body); err != nil {
 		return nil, err
 	}
 
@@ -89,10 +89,10 @@ func (c *Session) DeleteUserMacros(hostMacroIDs ...string) (hostMacroIds []strin
 // Returns a list of updated macro id(s).
 //
 // Zabbix API docs: https://www.zabbix.com/documentation/2.2/manual/api/reference/usermacro/update
-func (c *Session) UpdateUserMacros(macros ...HostMacro) (hostMacroIds []string, err error) {
+func (s *Session) UpdateUserMacros(macros ...HostMacro) (hostMacroIds []string, err error) {
 	var body UserMacroResponse
 
-	if err := c.Get("usermacro.update", hostMacroIds, &body); err != nil {
+	if err := s.Get("usermacro.update", hostMacroIds, &body); err != nil {
 		return nil, err
 	}
 

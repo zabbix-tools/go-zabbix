@@ -114,9 +114,9 @@ type ItemGetParams struct {
 //
 // ErrEventNotFound is returned if the search result set is empty.
 // An error is returned if a transport, parsing or API error occurs.
-func (c *Session) GetItems(params ItemGetParams) ([]Item, error) {
+func (s *Session) GetItems(params ItemGetParams) ([]Item, error) {
 	items := make([]jItem, 0)
-	err := c.Get("item.get", params, &items)
+	err := s.Get("item.get", params, &items)
 	if err != nil {
 		return nil, err
 	}

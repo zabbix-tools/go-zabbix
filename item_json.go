@@ -8,12 +8,12 @@ import (
 // jItem is a private map for the Zabbix API Host object.
 // See: https://www.zabbix.com/documentation/4.0/manual/api/reference/item/get
 type jItem struct {
-	HostID    string `json:"hostid,omitempty"`
-	ItemID    string `json:"itemid"`
-	ItemName  string `json:"name"`
-	ItemDescr string `json:"description,omitempty"`
-	LastClock string `json:"lastclock,omitempty"`
-	LastValue string `json:"lastvalue,omitempty"`
+	HostID        string `json:"hostid,omitempty"`
+	ItemID        string `json:"itemid"`
+	ItemName      string `json:"name"`
+	ItemDescr     string `json:"description,omitempty"`
+	LastClock     string `json:"lastclock,omitempty"`
+	LastValue     string `json:"lastvalue,omitempty"`
 	LastValueType string `json:"value_type"`
 }
 
