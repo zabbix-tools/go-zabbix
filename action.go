@@ -91,9 +91,9 @@ type ActionGetParams struct {
 //
 // ErrNotFound is returned if the search result set is empty.
 // An error is returned if a transport, parsing or API error occurs.
-func (c *Session) GetActions(params ActionGetParams) ([]Action, error) {
+func (s *Session) GetActions(params ActionGetParams) ([]Action, error) {
 	actions := make([]jAction, 0)
-	err := c.Get("action.get", params, &actions)
+	err := s.Get("action.get", params, &actions)
 	if err != nil {
 		return nil, err
 	}

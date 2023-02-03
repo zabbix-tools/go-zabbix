@@ -195,9 +195,9 @@ type TriggerGetParams struct {
 //
 // ErrTriggerNotFound is returned if the search result set is empty.
 // An error is returned if a transport, parsing or API error occurs.
-func (c *Session) GetTriggers(params TriggerGetParams) ([]Trigger, error) {
+func (s *Session) GetTriggers(params TriggerGetParams) ([]Trigger, error) {
 	triggers := make([]jTrigger, 0)
-	err := c.Get("trigger.get", params, &triggers)
+	err := s.Get("trigger.get", params, &triggers)
 	if err != nil {
 		return nil, err
 	}

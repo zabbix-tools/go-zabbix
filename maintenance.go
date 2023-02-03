@@ -10,7 +10,7 @@ import (
 type MaintenanceType int
 type TagsEvaltype int
 
-var ErrMaintenanceHostNotFound = errors.New("Failed to find ID by host name")
+var ErrMaintenanceHostNotFound = errors.New("failed to find ID by host name")
 
 const (
 	withDataCollection MaintenanceType = iota

@@ -10,7 +10,7 @@ import (
 )
 
 // ErrNotFound describes an empty result set for an API call.
-var ErrNotFound = errors.New("No results were found matching the given search parameters")
+var ErrNotFound = errors.New("no results were found matching the given search parameters")
 
 // A Session is an authenticated Zabbix JSON-RPC API client. It must be
 // initialized and connected with NewSession.
@@ -43,11 +43,11 @@ func NewSession(url string, username string, password string) (session *Session,
 	return
 }
 
-func (c *Session) login(username, password string) error {
+func (s *Session) login(username, password string) error {
 	// get Zabbix API version
-	_, err := c.GetVersion()
+	_, err := s.GetVersion()
 	if err != nil {
-		return fmt.Errorf("Failed to retrieve Zabbix API version: %v", err)
+		return fmt.Errorf("failed to retrieve Zabbix API version: %v", err)
 	}
 
 	// login to API
@@ -56,12 +56,12 @@ func (c *Session) login(username, password string) error {
 		"password": password,
 	}
 
-	res, err := c.Do(NewRequest("user.login", params))
+	res, err := s.Do(NewRequest("user.login", params))
 	if err != nil {
 		return fmt.Errorf("Error logging in to Zabbix API: %v", err)
 	}
 
-	err = res.Bind(&c.Token)
+	err = res.Bind(&s.Token)
 	if err != nil {
 		return fmt.Errorf("Error failed to decode Zabbix login response: %v", err)
 	}
@@ -70,26 +70,26 @@ func (c *Session) login(username, password string) error {
 }
 
 // GetVersion returns the software version string of the connected Zabbix API.
-func (c *Session) GetVersion() (string, error) {
-	if c.APIVersion == "" {
+func (s *Session) GetVersion() (string, error) {
+	if s.APIVersion == "" {
 		// get Zabbix API version
-		res, err := c.Do(NewRequest("apiinfo.version", nil))
+		res, err := s.Do(NewRequest("apiinfo.version", nil))
 		if err != nil {
 			return "", err
 		}
 
-		err = res.Bind(&c.APIVersion)
+		err = res.Bind(&s.APIVersion)
 		if err != nil {
 			return "", err
 		}
 	}
-	return c.APIVersion, nil
+	return s.APIVersion, nil
 }
 
 // AuthToken returns the authentication token used by this session to
 // authentication all API calls.
-func (c *Session) AuthToken() string {
-	return c.Token
+func (s *Session) AuthToken() string {
+	return s.Token
 }
 
 // Do sends a JSON-RPC request and returns an API Response, using connection
@@ -101,9 +101,9 @@ func (c *Session) AuthToken() string {
 // When err is nil, resp always contains a non-nil resp.Body.
 //
 // Generally Get or a wrapper function will be used instead of Do.
-func (c *Session) Do(req *Request) (resp *Response, err error) {
+func (s *Session) Do(req *Request) (resp *Response, err error) {
 	// configure request
-	req.AuthToken = c.Token
+	req.AuthToken = s.Token
 
 	// encode request as json
 	b, err := json.Marshal(req)
@@ -114,7 +114,7 @@ func (c *Session) Do(req *Request) (resp *Response, err error) {
 	dprintf("Call     [%s:%d]: %s\n", req.Method, req.RequestID, b)
 
 	// create HTTP request
-	r, err := http.NewRequest("POST", c.URL, bytes.NewReader(b))
+	r, err := http.NewRequest("POST", s.URL, bytes.NewReader(b))
 	if err != nil {
 		return
 	}
@@ -122,7 +122,7 @@ func (c *Session) Do(req *Request) (resp *Response, err error) {
 	r.Header.Add("Content-Type", "application/json-rpc")
 
 	// send request
-	client := c.client
+	client := s.client
 	if client == nil {
 		client = http.DefaultClient
 	}
@@ -164,9 +164,9 @@ func (c *Session) Do(req *Request) (resp *Response, err error) {
 // unmarshals the JSON response body into the given interface.
 //
 // An error is return if a transport, marshalling or API error happened.
-func (c *Session) Get(method string, params interface{}, v interface{}) error {
+func (s *Session) Get(method string, params interface{}, v interface{}) error {
 	req := NewRequest(method, params)
-	resp, err := c.Do(req)
+	resp, err := s.Do(req)
 	if err != nil {
 		return err
 	}
