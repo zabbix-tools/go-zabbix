@@ -52,7 +52,7 @@ func (c *Session) login(username, password string) error {
 
 	// login to API
 	params := map[string]string{
-		"user":     username,
+		"username":     username,
 		"password": password,
 	}
 
