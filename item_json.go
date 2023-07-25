@@ -15,6 +15,7 @@ type jItem struct {
 	LastClock string `json:"lastclock,omitempty"`
 	LastValue string `json:"lastvalue,omitempty"`
 	LastValueType string `json:"value_type"`
+	ItemError string `json:"error,omitempty"`
 }
 
 // Item returns a native Go Item struct mapped from the given JSON Item data.
@@ -42,6 +43,7 @@ func (c *jItem) Item() (*Item, error) {
 	if err != nil {
 		return nil, fmt.Errorf("Error parsing Item LastValueType: %v", err)
 	}
+	item.ItemError = c.ItemError
 	return item, err
 }
 
